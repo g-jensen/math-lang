@@ -14,6 +14,8 @@ class UtilsTest {
         assertTrue(Utils.isNumeric("-23"));
         assertTrue(Utils.isNumeric("4.5"));
         assertTrue(Utils.isNumeric("-65.15"));
+        assertTrue(Utils.isNumeric(".5"));
+        assertFalse(Utils.isNumeric("."));
         assertFalse(Utils.isNumeric("greg"));
     }
 }
