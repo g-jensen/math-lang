@@ -29,6 +29,17 @@ class ExpressionNodeFactoryTest {
     }
 
     @Test
+    void createsNullNodeIfMismatchParameterCount() {
+        ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
+
+        String[] t1 = {"+", "1"};
+        assertInstanceOf(NullExpressionNode.class,factory.createNode(t1,0));
+
+        String[] t2 = {"-", "1"};
+        assertInstanceOf(NullExpressionNode.class,factory.createNode(t2,0));
+    }
+
+    @Test
     void createsAdditionNodeIfTokenIsPlus() {
         ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
 
