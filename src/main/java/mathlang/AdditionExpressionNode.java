@@ -7,11 +7,12 @@ public class AdditionExpressionNode extends BinaryExpressionNode{
     public Value evaluate() {
         Value a = left.evaluate();
         Value b = right.evaluate();
-        if (a.toString().equals("null") || b.toString().equals("null")) {
-            return new Value("null");
+        Value nullValue = new NullValue();
+        if (a.equals(nullValue) || b.equals(nullValue)) {
+            return nullValue;
         } else {
-            Double val = a.toDouble() + b.toDouble();
-            return new Value(val.toString());
+            double val = a.toDouble() + b.toDouble();
+            return new Value(Double.toString(val));
         }
     }
 }

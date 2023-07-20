@@ -18,7 +18,6 @@ public class Repl {
     }
     public Value evaluate(String input) {
         if (input.equalsIgnoreCase("quit")) {
-            // TODO - create Value class and make "quit" return a QuitValue instance
             return new Value("quit");
         } else {
             // TODO - change evaluation to depend on abstraction
