@@ -1,12 +1,12 @@
 package mathlang;
 
 public class ConstantExpressionNode extends BinaryExpressionNode {
-    public ConstantExpressionNode(Integer value) {
+    public ConstantExpressionNode(Value value) {
         super();
         this.value = value;
     }
-    public Integer evaluate() {
+    public Value evaluate() {
         return value;
     }
-    private Integer value;
+    private Value value;
 }

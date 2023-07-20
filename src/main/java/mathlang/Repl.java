@@ -16,7 +16,7 @@ public class Repl {
             return null;
         }
     }
-    public Integer evaluate(String input) {
+    public Value evaluate(String input) {
         if (input.equalsIgnoreCase("quit")) {
             // TODO - create Value class and make "quit" return a QuitValue instance
             return null;
@@ -25,11 +25,11 @@ public class Repl {
             return treeBuilder.build(parser.getTokens(input)).evaluate();
         }
     }
-    public void print(int val) {
-        printStream.println("=> " + val);
+    public void print(Value val) {
+        printStream.println("=> " + val.toString());
     }
     public void loop() {
-        Integer value = evaluate(read());
+        Value value = evaluate(read());
         while (value != null) {
             print(value);
             value = evaluate(read());

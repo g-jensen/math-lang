@@ -1,7 +1,7 @@
 package mathlang;
 
 public class NullExpressionNode extends  BinaryExpressionNode {
-    public Integer evaluate() {
+    public Value evaluate() {
         return null;
     }
 }

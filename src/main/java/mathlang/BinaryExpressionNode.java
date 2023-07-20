@@ -9,7 +9,7 @@ public abstract class BinaryExpressionNode {
         this.left = left;
         this.right = right;
     }
-    abstract Integer evaluate();
+    abstract Value evaluate();
     protected BinaryExpressionNode left;
     protected BinaryExpressionNode right;
 }

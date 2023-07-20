@@ -15,7 +15,7 @@ public class ExpressionNodeFactory {
     }
 
     private BinaryExpressionNode createConstantNode(String[] tokens, int tokenIndex) {
-        return new ConstantExpressionNode(Integer.parseInt(tokens[tokenIndex]));
+        return new ConstantExpressionNode(new Value(tokens[tokenIndex]));
     }
 
     private BinaryExpressionNode createAdditionNode(String[] tokens, int tokenIndex) {
