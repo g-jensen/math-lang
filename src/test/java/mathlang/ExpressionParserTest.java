@@ -46,6 +46,17 @@ class ExpressionParserTest {
     }
 
     @Test
+    void getTokensOfNonExistentFunctionCall() {
+        ExpressionParser parser = new ExpressionParser();
+
+        String[] t1 = new String[]{"p","1","2"};
+        assertArrayEquals(t1,parser.getTokens("p 1 2"));
+
+        String[] t2 = new String[]{"q","3","5"};
+        assertArrayEquals(t2,parser.getTokens("q 3 5"));
+    }
+
+    @Test
     void getsTokensOfNestedFunctionCalls() {
         ExpressionParser parser = new ExpressionParser();
 
