@@ -5,7 +5,10 @@ import java.util.ArrayList;
 public class ExpressionParser {
 
     private boolean isPartOfNumber(char c) {
-        return Character.isDigit(c) || c == '-' || c == '+';
+        return  c == '.' ||
+                c == '-' ||
+                c == '+' ||
+                Character.isDigit(c);
     }
 
     public String parseNumber(String input, int startIndex) {

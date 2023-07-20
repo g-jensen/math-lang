@@ -24,6 +24,8 @@ class ExpressionParserTest {
 
         String[] s4 = new String[]{"(","+21",")"};
         assertArrayEquals(s4,parser.getTokens("(+21)"));
+
+        assertArrayEquals(new String[]{"3.14"}, parser.getTokens("3.14"));
     }
 
     @Test
