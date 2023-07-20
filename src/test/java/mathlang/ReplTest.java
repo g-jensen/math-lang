@@ -3,7 +3,6 @@ package mathlang;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
-import java.nio.file.Files;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,10 +53,10 @@ class ReplTest {
     void evaluatesInvalidInput() {
         initializeReplWithoutData();
 
-        assertNull(repl.evaluate(""));
-        assertNull(repl.evaluate("+ 3"));
-        assertNull(repl.evaluate("("));
-        assertNull(repl.evaluate("+ 3 ()"));
+        assertEquals("null",repl.evaluate("").toString());
+        assertEquals("null",repl.evaluate("+ 3").toString());
+        assertEquals("null",repl.evaluate("(").toString());
+        assertEquals("null",repl.evaluate("+ 3 ()").toString());
     }
 
     @Test
