@@ -12,8 +12,13 @@ public class ExpressionTreeBuilder {
         return str.length() == pos.getIndex();
     }
     public BinaryExpressionNode build(String[] tokens) {
-        for (String token : tokens) {
-            if (isNumeric(token)) {
+        for (int i = 0; i < tokens.length; i++) {
+            String token = tokens[i];
+            if (token.equals("+")) {
+                return new AdditionExpressionNode(
+                        new ConstantExpressionNode(Integer.parseInt(tokens[i+1])),
+                        new ConstantExpressionNode(Integer.parseInt(tokens[i+2])));
+            } else if (isNumeric(token)) {
                 return new ConstantExpressionNode(Integer.parseInt(token));
             }
         }

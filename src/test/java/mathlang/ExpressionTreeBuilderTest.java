@@ -26,4 +26,21 @@ class ExpressionTreeBuilderTest {
         assertInstanceOf(ConstantExpressionNode.class,r4);
         assertEquals(-31,r4.evaluate());
     }
+
+    @Test
+    void buildsExpressionTreeForAdditionWithLiterals() {
+        ExpressionTreeBuilder b = new ExpressionTreeBuilder();
+
+        BinaryExpressionNode r1 = b.build(new String[]{"+","1","1"});
+        assertInstanceOf(AdditionExpressionNode.class,r1);
+        assertEquals(2,r1.evaluate());
+
+        BinaryExpressionNode r2 = b.build(new String[]{"+","1","2"});
+        assertInstanceOf(AdditionExpressionNode.class,r2);
+        assertEquals(3,r2.evaluate());
+
+        BinaryExpressionNode r3 = b.build(new String[]{"(","+","2","3",")"});
+        assertInstanceOf(AdditionExpressionNode.class,r3);
+        assertEquals(5,r3.evaluate());
+    }
 }
