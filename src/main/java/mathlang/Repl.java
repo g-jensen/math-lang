@@ -7,7 +7,7 @@ public class Repl {
         this.reader = new BufferedReader(new InputStreamReader(inputStream));
         this.printStream = printStream;
         this.parser = new ExpressionParser();
-        this.builder = new ExpressionTreeBuilder();
+        this.treeBuilder = new ExpressionTreeBuilder();
     }
     public String read() {
         try {
@@ -16,11 +16,12 @@ public class Repl {
             return null;
         }
     }
+    // TODO - create Value class and make "quit" return a QuitValue
     public Integer evaluate(String input) {
         if (input.equalsIgnoreCase("quit")) {
             return null;
         } else {
-            return builder.build(parser.getTokens(input)).evaluate();
+            return treeBuilder.build(parser.getTokens(input)).evaluate();
         }
     }
     public void print(int val) {
@@ -36,5 +37,5 @@ public class Repl {
     private BufferedReader reader;
     private PrintStream printStream;
     private ExpressionParser parser;
-    private ExpressionTreeBuilder builder;
+    private ExpressionTreeBuilder treeBuilder;
 }
