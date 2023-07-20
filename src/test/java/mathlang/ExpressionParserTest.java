@@ -46,4 +46,19 @@ class ExpressionParserTest {
         String[] t3 = new String[]{"(","+","30","4",")"};
         assertArrayEquals(t3, parser.getTokens("(+ 30 4)").toArray());
     }
+
+    @Test
+    void getsTokensOfNestedFunctionCalls() {
+        ExpressionParser parser = new ExpressionParser();
+
+        String[] t1 = new String[]{"(","+","5","(","+","1","2",")",")"};
+        assertArrayEquals(t1,parser.getTokens("(+ 5 (+ 1 2))").toArray());
+
+        String[] t2 = new String[]{"(","+","(","+","1","2",")","5",")"};
+        assertArrayEquals(t2,parser.getTokens("(+ (+ 1 2) 5)").toArray());
+
+        String[] t3 = new String[]{"(","+","5","(","+","1","(","+","11","2",")",")",")"};
+        assertArrayEquals(t3,parser.getTokens("(+ 5 (+ 1 (+ 11 2)))").toArray());
+
+    }
 }
