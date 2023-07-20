@@ -6,6 +6,14 @@ public class Value {
     public Value(String string) {
         this.string = string;
     }
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {return true;}
+        if (!(obj instanceof Value)) {return false;}
+        Value v = (Value) obj;
+        return v.toString().equals(this.toString());
+    }
+    @Override
     public String toString() {
         Integer i = toInteger();
         Double d = toDouble();
