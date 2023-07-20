@@ -21,7 +21,7 @@ public class ExpressionParser {
         return numAsString.toString();
     }
 
-    public ArrayList<String> getTokens(String input) {
+    public String[] getTokens(String input) {
         ArrayList<String> tokens = new ArrayList<>();
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
@@ -33,6 +33,6 @@ public class ExpressionParser {
                 tokens.add(Character.toString(c));
             }
         }
-        return tokens;
+        return tokens.toArray(new String[0]);
     }
 }
