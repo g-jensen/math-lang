@@ -9,14 +9,22 @@ public class ExpressionTreeBuilder {
         for (int i = 0; i < tokens.length; i++) {
             String token = tokens[i];
             if (token.equals("+")) {
-                String[] p1 = nextParameter(tokens,i);
-                String[] p2 = nextParameter(tokens,i+p1.length);
-                return new AdditionExpressionNode(build(p1), build(p2));
+                return buildAdditionExpressionNode(tokens,i);
             } else if (isNumeric(token)) {
                 return new ConstantExpressionNode(Integer.parseInt(token));
             }
         }
-        return null;
+        return new NullExpressionNode();
+    }
+    // TODO - move to AdditionExpressionNodeFactory
+    private BinaryExpressionNode buildAdditionExpressionNode(String[] tokens, int tokenIndex) {
+        try {
+            String[] p1 = nextParameter(tokens,tokenIndex);
+            String[] p2 = nextParameter(tokens,tokenIndex+p1.length);
+            return new AdditionExpressionNode(build(p1), build(p2));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return new NullExpressionNode();
+        }
     }
     private String[] nextParameter(String[] tokens, int startingIndex) {
         if (isNumeric(tokens[startingIndex+1])) {

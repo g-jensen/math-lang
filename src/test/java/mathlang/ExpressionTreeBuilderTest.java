@@ -7,6 +7,27 @@ import static org.junit.jupiter.api.Assertions.*;
 class ExpressionTreeBuilderTest {
 
     @Test
+    void buildsNullExpressionTreeForInvalidTokens() {
+        ExpressionTreeBuilder b = new ExpressionTreeBuilder();
+
+        BinaryExpressionNode n1 = b.build(new String[0]);
+        assertInstanceOf(NullExpressionNode.class,n1);
+        assertNull(n1.evaluate());
+
+        BinaryExpressionNode n2 = b.build(new String[]{"("});
+        assertInstanceOf(NullExpressionNode.class,n2);
+        assertNull(n2.evaluate());
+
+        BinaryExpressionNode n3 = b.build(new String[]{"(",")"});
+        assertInstanceOf(NullExpressionNode.class,n3);
+        assertNull(n3.evaluate());
+
+        BinaryExpressionNode n4 = b.build(new String[]{"+","3"});
+        assertInstanceOf(NullExpressionNode.class,n4);
+        assertNull(n4.evaluate());
+    }
+
+    @Test
     void buildsExpressionTreeForConstants() {
         ExpressionTreeBuilder b = new ExpressionTreeBuilder();
 
