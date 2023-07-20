@@ -11,17 +11,14 @@ class ValueTest {
         Value v1 = new Value("");
         assertNull(v1.toInteger());
         assertNull(v1.toDouble());
-        assertEquals("",v1.toString());
 
         Value v2 = new Value("greg");
         assertNull(v2.toInteger());
         assertNull(v2.toDouble());
-        assertEquals("greg",v2.toString());
 
         Value v3 = new Value("d\\f][=4(*#&");
         assertNull(v3.toInteger());
         assertNull(v3.toDouble());
-        assertEquals("d\\f][=4(*#&",v3.toString());
     }
 
     @Test

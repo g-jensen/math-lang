@@ -39,24 +39,24 @@ class ReplTest {
     void evaluatesValidInput() {
         initializeReplWithoutData();
 
-        assertEquals("0", repl.evaluate("0").toString());
-        assertEquals("1", repl.evaluate("1").toString());
-        assertEquals("2", repl.evaluate("2").toString());
-        assertEquals("-1", repl.evaluate("-1").toString());
-        assertEquals("2",repl.evaluate("+ 1 1").toString());
-        assertEquals("5",repl.evaluate("(+ 2 3)").toString());
-        assertEquals("5",repl.evaluate("(+ 2 (+ 1 2))").toString());
-        assertEquals("12",repl.evaluate("(+ 2 (+ (+ 5 3) 2))").toString());
+        assertEquals(new Value("0"), repl.evaluate("0"));
+        assertEquals(new Value("1"), repl.evaluate("1"));
+        assertEquals(new Value("2"), repl.evaluate("2"));
+        assertEquals(new Value("-1"), repl.evaluate("-1"));
+        assertEquals(new Value("2"),repl.evaluate("+ 1 1"));
+        assertEquals(new Value("5"),repl.evaluate("(+ 2 3)"));
+        assertEquals(new Value("5"),repl.evaluate("(+ 2 (+ 1 2))"));
+        assertEquals(new Value("12"),repl.evaluate("(+ 2 (+ (+ 5 3) 2))"));
     }
 
     @Test
     void evaluatesInvalidInput() {
         initializeReplWithoutData();
 
-        assertEquals("null",repl.evaluate("").toString());
-        assertEquals("null",repl.evaluate("+ 3").toString());
-        assertEquals("null",repl.evaluate("(").toString());
-        assertEquals("null",repl.evaluate("+ 3 ()").toString());
+        assertEquals(new NullValue(),repl.evaluate(""));
+        assertEquals(new NullValue(),repl.evaluate("+ 3"));
+        assertEquals(new NullValue(),repl.evaluate("("));
+        assertEquals(new NullValue(),repl.evaluate("+ 3 ()"));
     }
 
     @Test

@@ -11,6 +11,6 @@ class NullExpressionNodeTest {
         NullExpressionNode n = new NullExpressionNode();
         assertNull(n.evaluate().toDouble());
         assertNull(n.evaluate().toInteger());
-        assertEquals("null",n.evaluate().toString());
+        assertEquals(new NullValue(),n.evaluate());
     }
 }

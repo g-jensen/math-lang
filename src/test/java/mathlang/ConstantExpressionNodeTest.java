@@ -12,8 +12,8 @@ class ConstantExpressionNodeTest {
         BinaryExpressionNode n2 = new ConstantExpressionNode(new Value("1"));
         BinaryExpressionNode n3 = new ConstantExpressionNode(new Value("-1"));
 
-        assertEquals("0",n1.evaluate().toString());
-        assertEquals("1",n2.evaluate().toString());
-        assertEquals("-1",n3.evaluate().toString());
+        assertEquals(new Value("0"),n1.evaluate());
+        assertEquals(new Value("1"),n2.evaluate());
+        assertEquals(new Value("-1"),n3.evaluate());
     }
 }
