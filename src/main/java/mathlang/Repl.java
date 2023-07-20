@@ -26,7 +26,7 @@ public class Repl {
         }
     }
     public void print(Value val) {
-        printStream.println("=> " + val.toString());
+        printStream.println("=> " + val);
     }
     public void loop() {
         Value value = evaluate(read());
