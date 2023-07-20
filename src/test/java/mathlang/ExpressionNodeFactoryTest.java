@@ -54,4 +54,20 @@ class ExpressionNodeFactoryTest {
         String[] t1 = {"-","2","1"};
         assertInstanceOf(SubtractionExpressionNode.class,factory.createNode(t1,0));
     }
+
+    @Test
+    void createsSubtractionNodeIfTokenIsAsterisk() {
+        ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
+
+        String[] t1 = {"*","2","1"};
+        assertInstanceOf(MultiplicationExpressionNode.class,factory.createNode(t1,0));
+    }
+
+    @Test
+    void createsSubtractionNodeIfTokenIsSlash() {
+        ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
+
+        String[] t1 = {"/","2","1"};
+        assertInstanceOf(DivisionExpressionNode.class,factory.createNode(t1,0));
+    }
 }

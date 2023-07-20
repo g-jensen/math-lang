@@ -16,10 +16,14 @@ public class ExpressionNodeFactory {
             return createAdditionNode(tokens, tokenIndex);
         } else if (token.equals("-")) {
             return createSubtractionNode(tokens,tokenIndex);
+        } else if (token.equals("*")) {
+            return createMultiplicationNode(tokens,tokenIndex);
+        } else if (token.equals("/")) {
+            return createDivisionNode(tokens,tokenIndex);
         }
         return null;
     }
-    private String[] specialTokens = {"(", ")", "+","-"};
+    private String[] specialTokens = {"(", ")", "+","-", "*", "/"};
     private boolean isSpecial(String token) {
         return Arrays.asList(specialTokens).contains(token);
     }
@@ -43,6 +47,24 @@ public class ExpressionNodeFactory {
             String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
             String[] p2 = treeBuilder.nextParameter(tokens,tokenIndex+p1.length);
             return new SubtractionExpressionNode(treeBuilder.build(p1), treeBuilder.build(p2));
+        } catch (Exception e) {
+            return new NullExpressionNode();
+        }
+    }
+    private BinaryExpressionNode createMultiplicationNode(String[] tokens, int tokenIndex) {
+        try {
+            String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
+            String[] p2 = treeBuilder.nextParameter(tokens,tokenIndex+p1.length);
+            return new MultiplicationExpressionNode(treeBuilder.build(p1), treeBuilder.build(p2));
+        } catch (Exception e) {
+            return new NullExpressionNode();
+        }
+    }
+    private BinaryExpressionNode createDivisionNode(String[] tokens, int tokenIndex) {
+        try {
+            String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
+            String[] p2 = treeBuilder.nextParameter(tokens,tokenIndex+p1.length);
+            return new DivisionExpressionNode(treeBuilder.build(p1), treeBuilder.build(p2));
         } catch (Exception e) {
             return new NullExpressionNode();
         }
