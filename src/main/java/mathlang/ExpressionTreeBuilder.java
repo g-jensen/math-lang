@@ -8,9 +8,7 @@ public class ExpressionTreeBuilder {
         ExpressionNodeFactory nodeFactory = new ExpressionNodeFactory(this);
         for (int i = 0; i < tokens.length; i++) {
             BinaryExpressionNode node = nodeFactory.createNode(tokens,i);
-            if (Objects.nonNull(node)) {
-                return node;
-            }
+            if (Objects.nonNull(node)) {return node;}
         }
         return new NullExpressionNode();
     }
