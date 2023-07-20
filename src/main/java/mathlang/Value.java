@@ -7,12 +7,15 @@ public class Value {
         this.string = string;
     }
     public String toString() {
-        String i = toInteger().toString();
-        String d = toDouble().toString();
-        if (isWholeNumber(d)) {
-            return i;
-        }
-        return d;
+        Integer i = toInteger();
+        Double d = toDouble();
+        if (Objects.isNull(d)) {return string;}
+
+        String is = i.toString();
+        String ds = d.toString();
+        if (isWholeNumber(ds)) {return is;}
+
+        return ds;
     }
     public Integer toInteger() {
         Double d = toDouble();
