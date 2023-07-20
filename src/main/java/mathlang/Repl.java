@@ -16,11 +16,12 @@ public class Repl {
             return null;
         }
     }
-    // TODO - create Value class and make "quit" return a QuitValue
     public Integer evaluate(String input) {
         if (input.equalsIgnoreCase("quit")) {
+            // TODO - create Value class and make "quit" return a QuitValue instance
             return null;
         } else {
+            // TODO - change evaluation to depend on abstraction
             return treeBuilder.build(parser.getTokens(input)).evaluate();
         }
     }

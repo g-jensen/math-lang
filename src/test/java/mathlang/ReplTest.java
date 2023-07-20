@@ -37,7 +37,7 @@ class ReplTest {
     }
 
     @Test
-    void evaluatesInput() {
+    void evaluatesValidInput() {
         initializeReplWithoutData();
 
         assertEquals(0, repl.evaluate("0"));
@@ -48,6 +48,16 @@ class ReplTest {
         assertEquals(5,repl.evaluate("(+ 2 3)"));
         assertEquals(5,repl.evaluate("(+ 2 (+ 1 2))"));
         assertEquals(12,repl.evaluate("(+ 2 (+ (+ 5 3) 2))"));
+    }
+
+    @Test
+    void evaluatesInvalidInput() {
+        initializeReplWithoutData();
+
+        assertNull(repl.evaluate(""));
+        assertNull(repl.evaluate("+ 3"));
+        assertNull(repl.evaluate("("));
+        assertNull(repl.evaluate("+ 3 ()"));
     }
 
     @Test
