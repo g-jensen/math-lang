@@ -1,7 +1,5 @@
 package mathlang;
 
-import java.util.Objects;
-
 public class AdditionExpressionNode extends BinaryExpressionNode{
     public AdditionExpressionNode(BinaryExpressionNode left, BinaryExpressionNode right) {
         super(left, right);
@@ -9,8 +7,8 @@ public class AdditionExpressionNode extends BinaryExpressionNode{
     public Value evaluate() {
         Value a = left.evaluate();
         Value b = right.evaluate();
-        if (Objects.isNull(a) || Objects.isNull(b)) {
-            return null;
+        if (a.toString().equals("null") || b.toString().equals("null")) {
+            return new Value("null");
         } else {
             Double val = a.toDouble() + b.toDouble();
             return new Value(val.toString());

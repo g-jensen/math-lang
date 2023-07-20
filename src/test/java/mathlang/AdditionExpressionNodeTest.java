@@ -11,7 +11,7 @@ class AdditionExpressionNodeTest {
         ConstantExpressionNode one = new ConstantExpressionNode(new Value("1"));
         ConstantExpressionNode two = new ConstantExpressionNode(new Value("2"));
         ConstantExpressionNode three = new ConstantExpressionNode(new Value("3"));
-        ConstantExpressionNode nullNode = new ConstantExpressionNode(null);
+        ConstantExpressionNode nullNode = new ConstantExpressionNode(new Value("null"));
         BinaryExpressionNode n1 = new AdditionExpressionNode(one, one);
         BinaryExpressionNode n2 = new AdditionExpressionNode(one, two);
         BinaryExpressionNode n3 = new AdditionExpressionNode(two, three);
@@ -20,6 +20,6 @@ class AdditionExpressionNodeTest {
         assertEquals("2",n1.evaluate().toString());
         assertEquals("3",n2.evaluate().toString());
         assertEquals("5",n3.evaluate().toString());
-        assertNull(n4.evaluate());
+        assertEquals("null",n4.evaluate().toString());
     }
 }
