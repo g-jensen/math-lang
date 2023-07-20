@@ -1,15 +1,15 @@
 package mathlang;
 
-public abstract class BinaryExpressionNode {
+public abstract class BinaryExpressionNode implements ExpressionNode {
     public BinaryExpressionNode() {
         this.left = null;
         this.right = null;
     }
-    public BinaryExpressionNode(BinaryExpressionNode left, BinaryExpressionNode right) {
+    public BinaryExpressionNode(ExpressionNode left, ExpressionNode right) {
         this.left = left;
         this.right = right;
     }
-    abstract Value evaluate();
-    protected BinaryExpressionNode left;
-    protected BinaryExpressionNode right;
+    public abstract Value evaluate();
+    protected ExpressionNode left;
+    protected ExpressionNode right;
 }
