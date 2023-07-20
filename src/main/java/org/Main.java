@@ -1,4 +1,6 @@
-package mathlang;
+package org;
+
+import mathlang.Repl;
 
 import java.io.IOException;
 
