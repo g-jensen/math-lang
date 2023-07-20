@@ -37,6 +37,12 @@ class ExpressionNodeFactoryTest {
 
         String[] t2 = {"-", "1"};
         assertInstanceOf(NullExpressionNode.class,factory.createNode(t2,0));
+
+        String[] t3 = {"*", "1"};
+        assertInstanceOf(NullExpressionNode.class,factory.createNode(t3,0));
+
+        String[] t4 = {"/", "1"};
+        assertInstanceOf(NullExpressionNode.class,factory.createNode(t4,0));
     }
 
     @Test
