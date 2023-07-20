@@ -16,7 +16,6 @@ public class Repl {
         if (input.equalsIgnoreCase("quit")) {
             return new Value("quit");
         } else {
-            // TODO - change evaluation to depend on abstraction
             return treeBuilder.build(parser.getTokens(input)).evaluate();
         }
     }
