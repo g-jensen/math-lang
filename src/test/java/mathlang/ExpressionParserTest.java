@@ -40,6 +40,9 @@ class ExpressionParserTest {
 
         String[] t3 = new String[]{"(","+","30","4",")"};
         assertArrayEquals(t3, parser.getTokens("(+ 30 4)"));
+
+        String[] t4 = new String[]{"(","+","30.1","4.74",")"};
+        assertArrayEquals(t4, parser.getTokens("(+ 30.1 4.74)"));
     }
 
     @Test
@@ -55,5 +58,7 @@ class ExpressionParserTest {
         String[] t3 = new String[]{"(","+","5","(","+","1","(","+","11","2",")",")",")"};
         assertArrayEquals(t3,parser.getTokens("(+ 5 (+ 1 (+ 11 2)))"));
 
+        String[] t4 = new String[]{"(","+","5","(","+","1","(","+","11.314","2",")",")",")"};
+        assertArrayEquals(t4,parser.getTokens("(+ 5 (+ 1 (+ 11.314 2)))"));
     }
 }
