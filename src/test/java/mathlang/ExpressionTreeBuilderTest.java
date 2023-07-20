@@ -43,4 +43,22 @@ class ExpressionTreeBuilderTest {
         assertInstanceOf(AdditionExpressionNode.class,r3);
         assertEquals(5,r3.evaluate());
     }
+
+    @Test
+    void buildsExpressionTreeForNestedAddition() {
+        ExpressionTreeBuilder b = new ExpressionTreeBuilder();
+
+        BinaryExpressionNode r1 = b.build(new String[]{"+","1","(","+","1","1",")"});
+        assertInstanceOf(AdditionExpressionNode.class,r1);
+        assertEquals(3,r1.evaluate());
+
+        BinaryExpressionNode r2 = b.build(new String[]{"+","(","+","1","1",")","2"});
+        assertInstanceOf(AdditionExpressionNode.class,r2);
+        assertEquals(4,r2.evaluate());
+
+        String[] t1 = new String[]{"+","(","+","(","+","2","3",")","1",")","2"};
+        BinaryExpressionNode r3 = b.build(t1);
+        assertInstanceOf(AdditionExpressionNode.class,r3);
+        assertEquals(8,r3.evaluate());
+    }
 }
