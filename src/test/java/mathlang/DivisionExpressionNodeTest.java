@@ -1,8 +1,6 @@
 package mathlang;
 
-import com.sun.org.apache.xpath.internal.operations.Div;
 import org.junit.jupiter.api.Test;
-import sun.util.resources.cldr.vi.CalendarData_vi_VN;
 
 import static org.junit.jupiter.api.Assertions.*;
 
