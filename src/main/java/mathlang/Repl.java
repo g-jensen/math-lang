@@ -6,6 +6,8 @@ public class Repl {
     public Repl(InputStream inputStream, PrintStream printStream) {
         this.reader = new BufferedReader(new InputStreamReader(inputStream));
         this.printStream = printStream;
+        this.parser = new ExpressionParser();
+        this.builder = new ExpressionTreeBuilder();
     }
     public String read() {
         try {
@@ -15,14 +17,10 @@ public class Repl {
         }
     }
     public Integer evaluate(String input) {
-        try {
-            if (input.equalsIgnoreCase("quit")) {
-                return null;
-            } else {
-                return Integer.parseInt(input);
-            }
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException();
+        if (input.equalsIgnoreCase("quit")) {
+            return null;
+        } else {
+            return builder.build(parser.getTokens(input)).evaluate();
         }
     }
     public void print(int val) {
@@ -37,4 +35,6 @@ public class Repl {
     }
     private BufferedReader reader;
     private PrintStream printStream;
+    private ExpressionParser parser;
+    private ExpressionTreeBuilder builder;
 }
