@@ -9,12 +9,8 @@ public class Repl {
         this.parser = new ExpressionParser();
         this.treeBuilder = new ExpressionTreeBuilder();
     }
-    public String read() {
-        try {
-            return reader.readLine();
-        } catch (IOException e) {
-            return null;
-        }
+    public String read() throws IOException {
+        return reader.readLine();
     }
     public Value evaluate(String input) {
         if (input.equalsIgnoreCase("quit")) {
@@ -27,7 +23,7 @@ public class Repl {
     public void print(Value val) {
         printStream.println("=> " + val);
     }
-    public void loop() {
+    public void loop() throws IOException {
         Value value = evaluate(read());
         while (!value.toString().equals("quit")) {
             print(value);

@@ -25,7 +25,7 @@ class ReplTest {
     }
 
     @Test
-    void readsFromReader() {
+    void readsFromReader() throws IOException {
         initializeReplWithData(new String[]{"0", "+ 1 2", "2", "(+ 65 3)"});
 
         assertEquals("0",repl.read());
@@ -78,7 +78,7 @@ class ReplTest {
     }
 
     @Test
-    void loopsUntilQuit() {
+    void loopsUntilQuit() throws IOException {
         initializeReplWithData(new String[]{"0","quit","-3"});
 
         repl.loop();
