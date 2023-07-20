@@ -90,7 +90,7 @@ class ExpressionTreeBuilderTest {
         assertInstanceOf(AdditionExpressionNode.class,n2);
         assertEquals(new Value("4"),n2.evaluate());
 
-        String[] t1 = new String[]{"+","(","+","(","+","2","3",")","1",")","2"};
+        String[] t1 = {"+","(","+","(","+","2","3",")","1",")","2"};
         BinaryExpressionNode n3 = b.build(t1);
         assertInstanceOf(AdditionExpressionNode.class,n3);
         assertEquals(new Value("8"),n3.evaluate());

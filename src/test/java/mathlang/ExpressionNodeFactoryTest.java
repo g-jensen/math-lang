@@ -10,10 +10,10 @@ class ExpressionNodeFactoryTest {
     void createsConstantNodeIfTokenIsNumber() {
         ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
 
-        String[] t1 = new String[]{"1"};
+        String[] t1 = {"1"};
         assertInstanceOf(ConstantExpressionNode.class,factory.createNode(t1,0));
 
-        String[] t2 = new String[]{"2"};
+        String[] t2 = {"2"};
         assertInstanceOf(ConstantExpressionNode.class,factory.createNode(t2,0));
     }
 
@@ -21,10 +21,10 @@ class ExpressionNodeFactoryTest {
     void createsNullNodeIfTokenIsNotSpecialAndNotNumber() {
         ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
 
-        String[] t1 = new String[]{"p"};
+        String[] t1 = {"p"};
         assertInstanceOf(NullExpressionNode.class,factory.createNode(t1,0));
 
-        String[] t2 = new String[]{"greg"};
+        String[] t2 = {"greg"};
         assertInstanceOf(NullExpressionNode.class,factory.createNode(t2,0));
     }
 
@@ -32,7 +32,7 @@ class ExpressionNodeFactoryTest {
     void createsAdditionNodeIfTokenIsPlus() {
         ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
 
-        String[] t1 = new String[]{"+","1","2"};
+        String[] t1 = {"+","1","2"};
         assertInstanceOf(AdditionExpressionNode.class,factory.createNode(t1,0));
     }
 
@@ -40,7 +40,7 @@ class ExpressionNodeFactoryTest {
     void createsSubtractionNodeIfTokenIsMinus() {
         ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
 
-        String[] t1 = new String[]{"-","2","1"};
+        String[] t1 = {"-","2","1"};
         assertInstanceOf(SubtractionExpressionNode.class,factory.createNode(t1,0));
     }
 }
