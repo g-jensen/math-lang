@@ -35,4 +35,12 @@ class ExpressionNodeFactoryTest {
         String[] t1 = new String[]{"+","1","2"};
         assertInstanceOf(AdditionExpressionNode.class,factory.createNode(t1,0));
     }
+
+    @Test
+    void createsSubtractionNodeIfTokenIsMinus() {
+        ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
+
+        String[] t1 = new String[]{"-","2","1"};
+        assertInstanceOf(SubtractionExpressionNode.class,factory.createNode(t1,0));
+    }
 }
