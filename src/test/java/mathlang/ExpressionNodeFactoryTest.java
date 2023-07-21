@@ -76,4 +76,13 @@ class ExpressionNodeFactoryTest {
         String[] t1 = {"/","2","1"};
         assertInstanceOf(DivisionExpressionNode.class,factory.createNode(t1,0));
     }
+
+    @Test
+    void createsExponentialNodeIfTokenIsExp() {
+        ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
+
+        String[] t1 = {"exp","2"};
+        assertInstanceOf(ExponentialExpressionNode.class,factory.createNode(t1,0));
+
+    }
 }
