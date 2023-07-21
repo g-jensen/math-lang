@@ -1,6 +1,6 @@
 package mathlang;
 
-public class ConstantExpressionNode extends BinaryExpressionNode {
+public class ConstantExpressionNode implements ExpressionNode {
     public ConstantExpressionNode(Value value) {
         super();
         this.value = value;
