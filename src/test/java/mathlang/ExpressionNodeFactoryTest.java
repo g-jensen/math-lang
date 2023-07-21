@@ -49,6 +49,9 @@ class ExpressionNodeFactoryTest {
 
         String[] t6 = {"ln"};
         assertInstanceOf(NullExpressionNode.class,factory.createNode(t6,0));
+
+        String[] t7 = {"sin"};
+        assertInstanceOf(NullExpressionNode.class,factory.createNode(t7,0));
     }
 
     @Test
@@ -97,5 +100,13 @@ class ExpressionNodeFactoryTest {
 
         String[] t1 = {"ln","2"};
         assertInstanceOf(NaturalLogExpressionNode.class,factory.createNode(t1,0));
+    }
+
+    @Test
+    void createsExponentialNodeIfTokenIsSin() {
+        ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
+
+        String[] t1 = {"sin","2"};
+        assertInstanceOf(SineExpressionNode.class,factory.createNode(t1,0));
     }
 }

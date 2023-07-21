@@ -23,11 +23,13 @@ public class ExpressionNodeFactory {
         } else if (token.equals("exp")) {
             return createExponentialNode(tokens,tokenIndex);
         } else if (token.equals("ln")) {
-            return createNaturalLogExpressionNode(tokens,tokenIndex);
+            return createNaturalLogNode(tokens,tokenIndex);
+        } else if (token.equals("sin")) {
+            return createSineNode(tokens,tokenIndex);
         }
         return null;
     }
-    private String[] specialTokens = {"(", ")", "+","-", "*", "/","exp", "ln"};
+    private String[] specialTokens = {"(",")","+","-","*","/","exp","ln","sin"};
     private boolean isSpecial(String token) {
         return Arrays.asList(specialTokens).contains(token);
     }
@@ -81,10 +83,18 @@ public class ExpressionNodeFactory {
             return new NullExpressionNode();
         }
     }
-    private ExpressionNode createNaturalLogExpressionNode(String[] tokens, int tokenIndex) {
+    private ExpressionNode createNaturalLogNode(String[] tokens, int tokenIndex) {
         try {
             String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
             return new NaturalLogExpressionNode(treeBuilder.build(p1));
+        } catch (Exception e) {
+            return new NullExpressionNode();
+        }
+    }
+    private ExpressionNode createSineNode(String[] tokens, int tokenIndex) {
+        try {
+            String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
+            return new SineExpressionNode(treeBuilder.build(p1));
         } catch (Exception e) {
             return new NullExpressionNode();
         }
