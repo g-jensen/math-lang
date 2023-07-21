@@ -11,7 +11,9 @@ public class ExpressionNodeFactory {
     public ExpressionNode createNode(String[] tokens, int tokenIndex) {
         String token = tokens[tokenIndex];
         if (Utils.isNumeric(token)) {
-            return createConstantNode(tokens, tokenIndex);
+            return createConstantNodeFromNumber(tokens, tokenIndex);
+        } else if (treeBuilder.definedSymbols.containsKey(token)) {
+            return createConstantNodeFromSymbol(tokens, tokenIndex);
         } else if (!isSpecial(token)) {
             return createNullNode();
         } else if (token.equals("+")) {
@@ -40,8 +42,11 @@ public class ExpressionNodeFactory {
     private  ExpressionNode createNullNode() {
         return new NullExpressionNode();
     }
-    private ExpressionNode createConstantNode(String[] tokens, int tokenIndex) {
+    private ExpressionNode createConstantNodeFromNumber(String[] tokens, int tokenIndex) {
         return new ConstantExpressionNode(new Value(tokens[tokenIndex]));
+    }
+    private ExpressionNode createConstantNodeFromSymbol(String[] tokens, int tokenIndex) {
+        return new ConstantExpressionNode(treeBuilder.definedSymbols.get(tokens[tokenIndex]));
     }
     private ExpressionNode createAdditionNode(String[] tokens, int tokenIndex) {
         try {

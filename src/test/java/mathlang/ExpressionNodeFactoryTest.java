@@ -121,4 +121,20 @@ class ExpressionNodeFactoryTest {
         String[] t1 = {"cos","2"};
         assertInstanceOf(CosineExpressionNode.class,factory.createNode(t1,0));
     }
+
+    @Test
+    void createsConstantNodeIfTokenIsE() {
+        ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
+
+        String[] t1 = {"e"};
+        assertInstanceOf(ConstantExpressionNode.class,factory.createNode(t1,0));
+    }
+
+    @Test
+    void createsConstantNodeIfTokenIsTao() {
+        ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
+
+        String[] t2 = {"tao"};
+        assertInstanceOf(ConstantExpressionNode.class,factory.createNode(t2,0));
+    }
 }
