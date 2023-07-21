@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class ExpressionTreeBuilder {
-    public BinaryExpressionNode build(String[] tokens) {
+    public ExpressionNode build(String[] tokens) {
         ExpressionNodeFactory nodeFactory = new ExpressionNodeFactory(this);
         for (int i = 0; i < tokens.length; i++) {
-            BinaryExpressionNode node = nodeFactory.createNode(tokens,i);
+            ExpressionNode node = nodeFactory.createNode(tokens,i);
             if (Objects.nonNull(node)) {return node;}
         }
         return new NullExpressionNode();

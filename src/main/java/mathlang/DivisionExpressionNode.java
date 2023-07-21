@@ -1,7 +1,7 @@
 package mathlang;
 
 public class DivisionExpressionNode extends BinaryExpressionNode{
-    public DivisionExpressionNode(BinaryExpressionNode left, BinaryExpressionNode right) {
+    public DivisionExpressionNode(ExpressionNode left, ExpressionNode right) {
         super(left, right);
     }
     public Value evaluate() {

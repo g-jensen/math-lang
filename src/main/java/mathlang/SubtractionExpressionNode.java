@@ -1,7 +1,7 @@
 package mathlang;
 
 public class SubtractionExpressionNode extends BinaryExpressionNode{
-    public SubtractionExpressionNode(BinaryExpressionNode left, BinaryExpressionNode right) {
+    public SubtractionExpressionNode(ExpressionNode left, ExpressionNode right) {
         super(left, right);
     }
     public Value evaluate() {
