@@ -47,6 +47,12 @@ class ExpressionParserTest {
 
         String[] t5 = {"+",".1","-2"};
         assertArrayEquals(t5, parser.getTokens("+ .1 -2"));
+
+        String[] t6 = {"exp","1"};
+        assertArrayEquals(t6, parser.getTokens("exp 1"));
+
+        String[] t7 = {"(","exp","2",")"};
+        assertArrayEquals(t7, parser.getTokens("(exp 2)"));
     }
 
     @Test
@@ -78,5 +84,11 @@ class ExpressionParserTest {
 
         String[] t4 = {"(","+","5","(","+","1","(","+","11.314","2",")",")",")"};
         assertArrayEquals(t4,parser.getTokens("(+ 5 (+ 1 (+ 11.314 2)))"));
+
+        String[] t5 = {"(","exp","(","exp","2",")",")"};
+        assertArrayEquals(t5, parser.getTokens("(exp (exp 2))"));
+
+        String[] t6 = {"(","exp","(","+","2","1",")",")"};
+        assertArrayEquals(t6, parser.getTokens("(exp (+ 2 1))"));
     }
 }
