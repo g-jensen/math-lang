@@ -9,7 +9,7 @@ import java.util.Arrays;
 public class ExpressionNodeFactory {
     public ExpressionNodeFactory(ExpressionTreeBuilder treeBuilder) {
         this.treeBuilder = treeBuilder;
-        this.specialTokens = new String[]{"(",")","+","-","*","/","exp","ln","sin","cos"};
+        this.specialTokens = new String[]{"(",")","+","-","*","/","exp","ln","sin","cos","def"};
     }
     public ExpressionNode createNode(String[] tokens, int tokenIndex) {
         String token = tokens[tokenIndex];
@@ -35,6 +35,8 @@ public class ExpressionNodeFactory {
             return createUnaryNode(tokens,tokenIndex,SineExpressionNode.class);
         } else if (token.equals("cos")) {
             return createUnaryNode(tokens,tokenIndex,CosineExpressionNode.class);
+        } else if (token.equals("def")) {
+            return createDefinitionNode(tokens,tokenIndex);
         }
         return null;
     }
@@ -65,6 +67,18 @@ public class ExpressionNodeFactory {
             String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
             return c.getConstructor(ExpressionNode.class)
                     .newInstance(treeBuilder.build(p1));
+        } catch (Exception e) {
+            return new NullExpressionNode();
+        }
+    }
+    private ExpressionNode createDefinitionNode(String[] tokens, int tokenIndex) {
+        try {
+            String symbol = tokens[tokenIndex+1];
+            ExpressionNode n = new ConstantExpressionNode(new Value(symbol));
+            String[] p2 = treeBuilder.nextParameter(tokens,tokenIndex+1);
+            ExpressionNode value = treeBuilder.build(p2);
+            treeBuilder.definedSymbols.put(symbol,value.evaluate());
+            return new DefinitionExpressionNode(n,value);
         } catch (Exception e) {
             return new NullExpressionNode();
         }

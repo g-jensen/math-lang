@@ -134,7 +134,15 @@ class ExpressionNodeFactoryTest {
     void createsConstantNodeIfTokenIsTao() {
         ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
 
-        String[] t2 = {"tao"};
-        assertInstanceOf(ConstantExpressionNode.class,factory.createNode(t2,0));
+        String[] t1 = {"tao"};
+        assertInstanceOf(ConstantExpressionNode.class,factory.createNode(t1,0));
+    }
+
+    @Test
+    void createsDefinitionNodeIfTokenIsDef() {
+        ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
+
+        String[] t1 = {"def","greg","10"};
+        assertInstanceOf(DefinitionExpressionNode.class,factory.createNode(t1,0));
     }
 }

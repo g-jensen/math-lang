@@ -127,4 +127,33 @@ class ExpressionTreeBuilderTest {
         assertInstanceOf(DivisionExpressionNode.class,n4);
         assertEquals(new Value("0.32816866068454725"),n4.evaluate());
     }
+
+    @Test
+    void buildsExpressionTreeForDef() {
+        ExpressionTreeBuilder b = new ExpressionTreeBuilder();
+
+        ExpressionNode n1 = b.build(new String[]{"def","greg","5"});
+        assertInstanceOf(DefinitionExpressionNode.class,n1);
+        assertEquals(new Value("5"),n1.evaluate());
+
+        String[] t1 = {"(","def","hello","(","+","1","3",")",")"};
+        ExpressionNode n2 = b.build(t1);
+        assertInstanceOf(DefinitionExpressionNode.class,n2);
+        assertEquals(new Value("4"),n2.evaluate());
+    }
+
+    @Test
+    void addsDefinedSymbolToMap() {
+        ExpressionTreeBuilder b = new ExpressionTreeBuilder();
+
+        assertFalse(b.definedSymbols.containsKey("greg"));
+        b.build(new String[]{"def","greg","5"});
+        assertTrue(b.definedSymbols.containsKey("greg"));
+        assertEquals(new Value("5"),b.definedSymbols.get("greg"));
+
+        assertFalse(b.definedSymbols.containsKey("hello"));
+        b.build(new String[]{"def","hello","(","+","2","5",")"});
+        assertTrue(b.definedSymbols.containsKey("hello"));
+        assertEquals(new Value("7"),b.definedSymbols.get("hello"));
+    }
 }
