@@ -1,6 +1,7 @@
 package mathlang;
 
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 public class ExpressionParser {
 
@@ -11,24 +12,11 @@ public class ExpressionParser {
                 Character.isDigit(c);
     }
 
-    public String parseNumber(String input, int startIndex) {
+    public String parse(String input, int startIndex, Predicate<Character> pred) {
         StringBuilder numAsString = new StringBuilder();
         for (int i = startIndex; i < input.length(); i++) {
             char c = input.charAt(i);
-            if (isPartOfNumber(c)) {
-                numAsString.append(c);
-            } else {
-                break;
-            }
-        }
-        return numAsString.toString();
-    }
-
-    public String parseWord(String input, int startIndex) {
-        StringBuilder numAsString = new StringBuilder();
-        for (int i = startIndex; i < input.length(); i++) {
-            char c = input.charAt(i);
-            if (Character.isAlphabetic(c)) {
+            if (pred.test(c)) {
                 numAsString.append(c);
             } else {
                 break;
@@ -42,11 +30,11 @@ public class ExpressionParser {
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
             if (isPartOfNumber(c)) {
-                String n = parseNumber(input,i);
+                String n = parse(input,i,this::isPartOfNumber);
                 tokens.add(n);
                 i += n.length()-1;
             } else if (Character.isAlphabetic(c)) {
-                String w = parseWord(input,i);
+                String w = parse(input,i,Character::isAlphabetic);
                 tokens.add(w);
                 i += w.length()-1;
             } else if (c != ' '){
