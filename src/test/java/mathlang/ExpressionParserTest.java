@@ -30,6 +30,19 @@ class ExpressionParserTest {
     }
 
     @Test
+    void getsTokensOfSymbol() {
+        ExpressionParser parser = new ExpressionParser();
+
+        assertArrayEquals(new String[]{"e"},parser.getTokens("e"));
+        assertArrayEquals(new String[]{"(","e",")"},parser.getTokens("(e)"));
+        assertArrayEquals(new String[]{"(","ln","e",")"},parser.getTokens("(ln e)"));
+
+        assertArrayEquals(new String[]{"tao"},parser.getTokens("tao"));
+        assertArrayEquals(new String[]{"(","tao",")"},parser.getTokens("(tao)"));
+        assertArrayEquals(new String[]{"(","ln","tao",")"},parser.getTokens("(ln tao)"));
+    }
+
+    @Test
     void getsTokensOfFunctionCallWithLiterals() {
         ExpressionParser parser = new ExpressionParser();
 
