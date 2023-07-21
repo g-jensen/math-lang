@@ -1,9 +1,6 @@
 package mathlang;
 
-import mathlang.expressionnode.AdditionExpressionNode;
-import mathlang.expressionnode.ConstantExpressionNode;
-import mathlang.expressionnode.ExpressionNode;
-import mathlang.expressionnode.NullExpressionNode;
+import mathlang.expressionnode.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,7 +50,20 @@ class ExpressionTreeBuilderTest {
     }
 
     @Test
-    void buildsExpressionTreeForAdditionWithLiterals() {
+    void buildsExpressionTreeForSymbols() {
+        ExpressionTreeBuilder b = new ExpressionTreeBuilder();
+
+        ExpressionNode n1 = b.build(new String[]{"e"});
+        assertInstanceOf(ConstantExpressionNode.class,n1);
+        assertEquals(new Value(Double.toString(Math.exp(1))),n1.evaluate());
+
+        ExpressionNode n2 = b.build(new String[]{"tao"});
+        assertInstanceOf(ConstantExpressionNode.class,n2);
+        assertEquals(new Value(Double.toString(2 * Math.PI)),n2.evaluate());
+    }
+
+    @Test
+    void buildsExpressionTreeForFunctionsWithLiterals() {
         ExpressionTreeBuilder b = new ExpressionTreeBuilder();
 
         ExpressionNode n1 = b.build(new String[]{"+","1","1"});
@@ -67,6 +77,19 @@ class ExpressionTreeBuilderTest {
         ExpressionNode n3 = b.build(new String[]{"(","+","2","3",")"});
         assertInstanceOf(AdditionExpressionNode.class,n3);
         assertEquals(new Value("5"),n3.evaluate());
+    }
+
+    @Test
+    void buildsExpressionTreeForFunctionsWithSymbols() {
+        ExpressionTreeBuilder b = new ExpressionTreeBuilder();
+
+        ExpressionNode n1 = b.build(new String[]{"cos","tao"});
+        assertInstanceOf(CosineExpressionNode.class,n1);
+        assertEquals(new Value("1"),n1.evaluate());
+
+        ExpressionNode n2 = b.build(new String[]{"/","tao","2"});
+        assertInstanceOf(DivisionExpressionNode.class,n2);
+        assertEquals(new Value(Double.toString(Math.PI)),n2.evaluate());
     }
     
     @Test
@@ -83,7 +106,7 @@ class ExpressionTreeBuilderTest {
     }
 
     @Test
-    void buildsExpressionTreeForNestedAddition() {
+    void buildsExpressionTreeForNestedFunctions() {
         ExpressionTreeBuilder b = new ExpressionTreeBuilder();
 
         ExpressionNode n1 = b.build(new String[]{"+","1","(","+","1","1",")"});
@@ -98,5 +121,10 @@ class ExpressionTreeBuilderTest {
         ExpressionNode n3 = b.build(t1);
         assertInstanceOf(AdditionExpressionNode.class,n3);
         assertEquals(new Value("8"),n3.evaluate());
+
+        String[] t2 = {"(","/","e","(","+","tao","2",")",")"};
+        ExpressionNode n4 = b.build(t2);
+        assertInstanceOf(DivisionExpressionNode.class,n4);
+        assertEquals(new Value("0.32816866068454725"),n4.evaluate());
     }
 }
