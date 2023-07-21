@@ -22,10 +22,12 @@ public class ExpressionNodeFactory {
             return createDivisionNode(tokens,tokenIndex);
         } else if (token.equals("exp")) {
             return createExponentialNode(tokens,tokenIndex);
+        } else if (token.equals("ln")) {
+            return createNaturalLogExpressionNode(tokens,tokenIndex);
         }
         return null;
     }
-    private String[] specialTokens = {"(", ")", "+","-", "*", "/","exp"};
+    private String[] specialTokens = {"(", ")", "+","-", "*", "/","exp", "ln"};
     private boolean isSpecial(String token) {
         return Arrays.asList(specialTokens).contains(token);
     }
@@ -75,6 +77,14 @@ public class ExpressionNodeFactory {
         try {
             String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
             return new ExponentialExpressionNode(treeBuilder.build(p1));
+        } catch (Exception e) {
+            return new NullExpressionNode();
+        }
+    }
+    private ExpressionNode createNaturalLogExpressionNode(String[] tokens, int tokenIndex) {
+        try {
+            String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
+            return new NaturalLogExpressionNode(treeBuilder.build(p1));
         } catch (Exception e) {
             return new NullExpressionNode();
         }

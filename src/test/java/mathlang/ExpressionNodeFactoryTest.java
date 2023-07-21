@@ -46,6 +46,9 @@ class ExpressionNodeFactoryTest {
 
         String[] t5 = {"exp"};
         assertInstanceOf(NullExpressionNode.class,factory.createNode(t5,0));
+
+        String[] t6 = {"ln"};
+        assertInstanceOf(NullExpressionNode.class,factory.createNode(t6,0));
     }
 
     @Test
@@ -86,6 +89,13 @@ class ExpressionNodeFactoryTest {
 
         String[] t1 = {"exp","2"};
         assertInstanceOf(ExponentialExpressionNode.class,factory.createNode(t1,0));
+    }
 
+    @Test
+    void createsExponentialNodeIfTokenIsLn() {
+        ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
+
+        String[] t1 = {"ln","2"};
+        assertInstanceOf(NaturalLogExpressionNode.class,factory.createNode(t1,0));
     }
 }
