@@ -52,6 +52,9 @@ class ExpressionNodeFactoryTest {
 
         String[] t7 = {"sin"};
         assertInstanceOf(NullExpressionNode.class,factory.createNode(t7,0));
+
+        String[] t8 = {"cos"};
+        assertInstanceOf(NullExpressionNode.class,factory.createNode(t8,0));
     }
 
     @Test
@@ -108,5 +111,13 @@ class ExpressionNodeFactoryTest {
 
         String[] t1 = {"sin","2"};
         assertInstanceOf(SineExpressionNode.class,factory.createNode(t1,0));
+    }
+
+    @Test
+    void createsExponentialNodeIfTokenIsCos() {
+        ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
+
+        String[] t1 = {"cos","2"};
+        assertInstanceOf(CosineExpressionNode.class,factory.createNode(t1,0));
     }
 }

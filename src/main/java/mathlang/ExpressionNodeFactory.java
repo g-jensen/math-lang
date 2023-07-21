@@ -26,10 +26,12 @@ public class ExpressionNodeFactory {
             return createNaturalLogNode(tokens,tokenIndex);
         } else if (token.equals("sin")) {
             return createSineNode(tokens,tokenIndex);
+        } else if (token.equals("cos")) {
+            return createCosineNode(tokens,tokenIndex);
         }
         return null;
     }
-    private String[] specialTokens = {"(",")","+","-","*","/","exp","ln","sin"};
+    private String[] specialTokens = {"(",")","+","-","*","/","exp","ln","sin","cos"};
     private boolean isSpecial(String token) {
         return Arrays.asList(specialTokens).contains(token);
     }
@@ -95,6 +97,14 @@ public class ExpressionNodeFactory {
         try {
             String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
             return new SineExpressionNode(treeBuilder.build(p1));
+        } catch (Exception e) {
+            return new NullExpressionNode();
+        }
+    }
+    private ExpressionNode createCosineNode(String[] tokens, int tokenIndex) {
+        try {
+            String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
+            return new CosineExpressionNode(treeBuilder.build(p1));
         } catch (Exception e) {
             return new NullExpressionNode();
         }
