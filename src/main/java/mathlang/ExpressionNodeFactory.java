@@ -9,6 +9,7 @@ import java.util.Arrays;
 public class ExpressionNodeFactory {
     public ExpressionNodeFactory(ExpressionTreeBuilder treeBuilder) {
         this.treeBuilder = treeBuilder;
+        this.specialTokens = new String[]{"(",")","+","-","*","/","exp","ln","sin","cos"};
     }
     public ExpressionNode createNode(String[] tokens, int tokenIndex) {
         String token = tokens[tokenIndex];
@@ -37,7 +38,6 @@ public class ExpressionNodeFactory {
         }
         return null;
     }
-    private String[] specialTokens = {"(",")","+","-","*","/","exp","ln","sin","cos"};
     private boolean isSpecial(String token) {
         return Arrays.asList(specialTokens).contains(token);
     }
@@ -70,4 +70,5 @@ public class ExpressionNodeFactory {
         }
     }
     private ExpressionTreeBuilder treeBuilder;
+    private String[] specialTokens;
 }
