@@ -6,6 +6,9 @@ public class Value {
     public Value(String string) {
         this.string = string;
     }
+    public boolean isWord() {
+        return Objects.isNull(toDouble()) && Objects.isNull(toInteger());
+    }
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {return true;}

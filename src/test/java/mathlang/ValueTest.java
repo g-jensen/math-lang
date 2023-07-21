@@ -53,4 +53,16 @@ class ValueTest {
         Value v5 = new Value("3.000123");
         assertEquals("3.000123",v5.toString());
     }
+
+    @Test
+    void checksIfValueIsAWord() {
+        Value v1 = new Value("hello");
+        assertTrue(v1.isWord());
+
+        Value v2 = new Value("4");
+        assertFalse(v2.isWord());
+
+        Value v3 = new Value("3.2");
+        assertFalse(v3.isWord());
+    }
 }
