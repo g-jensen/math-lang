@@ -1,4 +1,9 @@
-package mathlang;
+package mathlang.expressionnode;
+
+import mathlang.NullValue;
+import mathlang.Value;
+import mathlang.expressionnode.ExpressionNode;
+import mathlang.expressionnode.UnaryExpressionNode;
 
 public class NaturalLogExpressionNode extends UnaryExpressionNode {
     public NaturalLogExpressionNode(ExpressionNode parameter) {

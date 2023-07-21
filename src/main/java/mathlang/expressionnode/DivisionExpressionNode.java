@@ -1,7 +1,10 @@
-package mathlang;
+package mathlang.expressionnode;
 
-public class AdditionExpressionNode extends BinaryExpressionNode{
-    public AdditionExpressionNode(ExpressionNode left, ExpressionNode right) {
+import mathlang.NullValue;
+import mathlang.Value;
+
+public class DivisionExpressionNode extends BinaryExpressionNode {
+    public DivisionExpressionNode(ExpressionNode left, ExpressionNode right) {
         super(left, right);
     }
     public Value evaluate() {
@@ -11,7 +14,7 @@ public class AdditionExpressionNode extends BinaryExpressionNode{
         if (a.equals(nullValue) || b.equals(nullValue)) {
             return nullValue;
         } else {
-            double val = a.toDouble() + b.toDouble();
+            double val = a.toDouble() / b.toDouble();
             return new Value(Double.toString(val));
         }
     }

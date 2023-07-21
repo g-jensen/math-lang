@@ -1,6 +1,9 @@
-package mathlang;
+package mathlang.expressionnode;
 
-public class CosineExpressionNode extends  UnaryExpressionNode {
+import mathlang.NullValue;
+import mathlang.Value;
+
+public class CosineExpressionNode extends UnaryExpressionNode {
     public CosineExpressionNode(ExpressionNode parameter) {
         super(parameter);
     }

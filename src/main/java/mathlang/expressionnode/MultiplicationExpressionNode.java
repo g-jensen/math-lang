@@ -1,6 +1,11 @@
-package mathlang;
+package mathlang.expressionnode;
 
-public class MultiplicationExpressionNode extends BinaryExpressionNode{
+import mathlang.NullValue;
+import mathlang.Value;
+import mathlang.expressionnode.BinaryExpressionNode;
+import mathlang.expressionnode.ExpressionNode;
+
+public class MultiplicationExpressionNode extends BinaryExpressionNode {
     public MultiplicationExpressionNode(ExpressionNode left, ExpressionNode right) {
         super(left, right);
     }

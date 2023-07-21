@@ -1,4 +1,6 @@
-package mathlang;
+package mathlang.expressionnode;
+
+import mathlang.Value;
 
 public abstract class BinaryExpressionNode implements ExpressionNode {
     public BinaryExpressionNode() {

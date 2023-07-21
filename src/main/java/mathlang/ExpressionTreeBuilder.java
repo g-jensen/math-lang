@@ -1,5 +1,8 @@
 package mathlang;
 
+import mathlang.expressionnode.ExpressionNode;
+import mathlang.expressionnode.NullExpressionNode;
+
 import java.util.ArrayList;
 import java.util.Objects;
 

@@ -1,5 +1,7 @@
 package mathlang;
 
+import mathlang.expressionnode.*;
+
 import java.util.Arrays;
 
 public class ExpressionNodeFactory {

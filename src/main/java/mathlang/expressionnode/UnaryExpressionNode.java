@@ -1,6 +1,9 @@
-package mathlang;
+package mathlang.expressionnode;
 
-public abstract class UnaryExpressionNode implements ExpressionNode{
+import mathlang.Value;
+import mathlang.expressionnode.ExpressionNode;
+
+public abstract class UnaryExpressionNode implements ExpressionNode {
     public UnaryExpressionNode(ExpressionNode parameter) {
         this.parameter = parameter;
     }

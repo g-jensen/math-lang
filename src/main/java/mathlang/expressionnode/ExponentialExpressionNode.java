@@ -1,7 +1,10 @@
-package mathlang;
+package mathlang.expressionnode;
 
-public class SineExpressionNode extends UnaryExpressionNode {
-    public SineExpressionNode(ExpressionNode parameter) {
+import mathlang.NullValue;
+import mathlang.Value;
+
+public class ExponentialExpressionNode extends UnaryExpressionNode {
+    public ExponentialExpressionNode(ExpressionNode parameter) {
         super(parameter);
     }
     public Value evaluate() {
@@ -10,7 +13,7 @@ public class SineExpressionNode extends UnaryExpressionNode {
         if (v.equals(nullValue)) {
             return nullValue;
         } else {
-            double val = Math.sin(v.toDouble());
+            double val = Math.exp(v.toDouble());
             return new Value(Double.toString(val));
         }
     }

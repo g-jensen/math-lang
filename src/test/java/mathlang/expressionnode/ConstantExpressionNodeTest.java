@@ -1,5 +1,8 @@
-package mathlang;
+package mathlang.expressionnode;
 
+import mathlang.Value;
+import mathlang.expressionnode.ConstantExpressionNode;
+import mathlang.expressionnode.ExpressionNode;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
