@@ -2,6 +2,8 @@ package mathlang;
 
 import mathlang.expressionnode.*;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 public class ExpressionNodeFactory {
@@ -17,21 +19,21 @@ public class ExpressionNodeFactory {
         } else if (!isSpecial(token)) {
             return createNullNode();
         } else if (token.equals("+")) {
-            return createAdditionNode(tokens, tokenIndex);
+            return createBinaryNode(tokens,tokenIndex,AdditionExpressionNode.class);
         } else if (token.equals("-")) {
-            return createSubtractionNode(tokens,tokenIndex);
+            return createBinaryNode(tokens,tokenIndex,SubtractionExpressionNode.class);
         } else if (token.equals("*")) {
-            return createMultiplicationNode(tokens,tokenIndex);
+            return createBinaryNode(tokens,tokenIndex,MultiplicationExpressionNode.class);
         } else if (token.equals("/")) {
-            return createDivisionNode(tokens,tokenIndex);
+            return createBinaryNode(tokens,tokenIndex,DivisionExpressionNode.class);
         } else if (token.equals("exp")) {
-            return createExponentialNode(tokens,tokenIndex);
+            return createUnaryNode(tokens,tokenIndex,ExponentialExpressionNode.class);
         } else if (token.equals("ln")) {
-            return createNaturalLogNode(tokens,tokenIndex);
+            return createUnaryNode(tokens,tokenIndex,NaturalLogExpressionNode.class);
         } else if (token.equals("sin")) {
-            return createSineNode(tokens,tokenIndex);
+            return createUnaryNode(tokens,tokenIndex,SineExpressionNode.class);
         } else if (token.equals("cos")) {
-            return createCosineNode(tokens,tokenIndex);
+            return createUnaryNode(tokens,tokenIndex,CosineExpressionNode.class);
         }
         return null;
     }
@@ -48,70 +50,21 @@ public class ExpressionNodeFactory {
     private ExpressionNode createConstantNodeFromSymbol(String[] tokens, int tokenIndex) {
         return new ConstantExpressionNode(treeBuilder.definedSymbols.get(tokens[tokenIndex]));
     }
-    private ExpressionNode createAdditionNode(String[] tokens, int tokenIndex) {
+    private ExpressionNode createBinaryNode(String[] tokens, int tokenIndex, Class<? extends BinaryExpressionNode> c) {
         try {
             String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
             String[] p2 = treeBuilder.nextParameter(tokens,tokenIndex+p1.length);
-            return new AdditionExpressionNode(treeBuilder.build(p1), treeBuilder.build(p2));
+            return c.getConstructor(ExpressionNode.class,ExpressionNode.class)
+                    .newInstance(treeBuilder.build(p1), treeBuilder.build(p2));
         } catch (Exception e) {
             return new NullExpressionNode();
         }
     }
-    private ExpressionNode createSubtractionNode(String[] tokens, int tokenIndex) {
+    private ExpressionNode createUnaryNode(String[] tokens, int tokenIndex, Class<? extends UnaryExpressionNode> c) {
         try {
             String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
-            String[] p2 = treeBuilder.nextParameter(tokens,tokenIndex+p1.length);
-            return new SubtractionExpressionNode(treeBuilder.build(p1), treeBuilder.build(p2));
-        } catch (Exception e) {
-            return new NullExpressionNode();
-        }
-    }
-    private ExpressionNode createMultiplicationNode(String[] tokens, int tokenIndex) {
-        try {
-            String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
-            String[] p2 = treeBuilder.nextParameter(tokens,tokenIndex+p1.length);
-            return new MultiplicationExpressionNode(treeBuilder.build(p1), treeBuilder.build(p2));
-        } catch (Exception e) {
-            return new NullExpressionNode();
-        }
-    }
-    private ExpressionNode createDivisionNode(String[] tokens, int tokenIndex) {
-        try {
-            String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
-            String[] p2 = treeBuilder.nextParameter(tokens,tokenIndex+p1.length);
-            return new DivisionExpressionNode(treeBuilder.build(p1), treeBuilder.build(p2));
-        } catch (Exception e) {
-            return new NullExpressionNode();
-        }
-    }
-    private ExpressionNode createExponentialNode(String[] tokens, int tokenIndex) {
-        try {
-            String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
-            return new ExponentialExpressionNode(treeBuilder.build(p1));
-        } catch (Exception e) {
-            return new NullExpressionNode();
-        }
-    }
-    private ExpressionNode createNaturalLogNode(String[] tokens, int tokenIndex) {
-        try {
-            String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
-            return new NaturalLogExpressionNode(treeBuilder.build(p1));
-        } catch (Exception e) {
-            return new NullExpressionNode();
-        }
-    }
-    private ExpressionNode createSineNode(String[] tokens, int tokenIndex) {
-        try {
-            String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
-            return new SineExpressionNode(treeBuilder.build(p1));
-        } catch (Exception e) {
-            return new NullExpressionNode();
-        }
-    }
-    private ExpressionNode createCosineNode(String[] tokens, int tokenIndex) {
-        try {
-            String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
-            return new CosineExpressionNode(treeBuilder.build(p1));
+            return c.getConstructor(ExpressionNode.class)
+                    .newInstance(treeBuilder.build(p1));
         } catch (Exception e) {
             return new NullExpressionNode();
         }
