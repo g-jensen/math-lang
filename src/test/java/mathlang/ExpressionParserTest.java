@@ -30,6 +30,16 @@ class ExpressionParserTest {
     }
 
     @Test
+    void getsTokensOfSymbolDefinition() {
+        ExpressionParser parser = new ExpressionParser();
+
+        assertArrayEquals(new String[]{"def","g","5"},parser.getTokens("def g 5"));
+
+        String[] t1 = {"(","def","greg","(","+","1","2",")",")"};
+        assertArrayEquals(t1,parser.getTokens("(def greg (+ 1 2))"));
+    }
+
+    @Test
     void getsTokensOfSymbol() {
         ExpressionParser parser = new ExpressionParser();
 
