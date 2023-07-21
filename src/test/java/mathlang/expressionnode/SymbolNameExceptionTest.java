@@ -5,17 +5,17 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FunctionExpressionNameExceptionTest {
+class SymbolNameExceptionTest {
 
     @Test
     void createsCorrectMessage() {
-        FunctionExpressionNameException e1 = new FunctionExpressionNameException(new Value("1"));
+        SymbolNameException e1 = new SymbolNameException(new Value("1"));
         assertEquals(
                 "Invalid function name: \"1\". Name must be a word",
                 e1.getMessage()
         );
 
-        FunctionExpressionNameException e2 = new FunctionExpressionNameException(new Value(";milk123"));
+        SymbolNameException e2 = new SymbolNameException(new Value(";milk123"));
         assertEquals(
                 "Invalid function name: \";milk123\". Name must be a word",
                 e2.getMessage()
