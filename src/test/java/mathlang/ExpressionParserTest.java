@@ -116,6 +116,23 @@ class ExpressionParserTest {
     }
 
     @Test
+    void getsTokensOfList() {
+        ExpressionParser parser = new ExpressionParser();
+
+        String[] t1 = {"[","1","2","]"};
+        assertArrayEquals(t1, parser.getTokens("[1 2]"));
+
+        String[] t2 = {"[","19","2","]"};
+        assertArrayEquals(t2, parser.getTokens("[ 19 2]"));
+
+        String[] t3 = {"[","12","26","]"};
+        assertArrayEquals(t3, parser.getTokens("[ 12 26 ]"));
+
+        String[] t4 = {"[","(","+","1","2",")","19","]"};
+        assertArrayEquals(t4, parser.getTokens("[(+ 1 2) 19]"));
+    }
+
+    @Test
     void getsTokensOfFunctionDefinition() {
         ExpressionParser parser = new ExpressionParser();
 
