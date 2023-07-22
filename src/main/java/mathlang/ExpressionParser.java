@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 
 public class ExpressionParser {
     public ExpressionParser() {
-        specialChars = new Character[]{' ', '(', ')'};
+        specialChars = new Character[]{' ', '(', ')','[',']'};
     }
 
     private boolean isPartOfNumber(char c) {

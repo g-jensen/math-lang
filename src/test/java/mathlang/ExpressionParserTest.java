@@ -130,6 +130,12 @@ class ExpressionParserTest {
 
         String[] t4 = {"[","(","+","1","2",")","19","]"};
         assertArrayEquals(t4, parser.getTokens("[(+ 1 2) 19]"));
+
+        String[] t5 = {"[","greg","]"};
+        assertArrayEquals(t5, parser.getTokens("[greg]"));
+
+        String[] t6 = {"[","greg","hello1","]"};
+        assertArrayEquals(t6, parser.getTokens("[greg hello1]"));
     }
 
     @Test
@@ -144,5 +150,11 @@ class ExpressionParserTest {
 
         String[] t3 = {"fun","myFun2","[","]","1"};
         assertArrayEquals(t3, parser.getTokens("fun myFun2 [] 1"));
+
+        String[] t4 = {"fun","myFun","[","param1","]","(","+","1","1",")"};
+        assertArrayEquals(t4, parser.getTokens("fun myFun [param1] (+ 1 1)"));
+
+        String[] t5 = {"fun","add","[","a","b","]","(","+","a","b",")"};
+        assertArrayEquals(t5, parser.getTokens("fun add [a b] (+ a b)"));
     }
 }
