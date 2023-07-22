@@ -114,4 +114,15 @@ class ExpressionParserTest {
         String[] t6 = {"(","exp","(","+","2","1",")",")"};
         assertArrayEquals(t6, parser.getTokens("(exp (+ 2 1))"));
     }
+
+    @Test
+    void getsTokensOfFunctionDefinition() {
+        ExpressionParser parser = new ExpressionParser();
+
+        String[] t1 = {"fun","myFun","[","]","1"};
+        assertArrayEquals(t1, parser.getTokens("fun myFun [] 1"));
+
+        String[] t2 = {"(","fun","otherFun","[","]","(","+","1","1",")",")"};
+        assertArrayEquals(t2, parser.getTokens("(fun otherFun [] (+ 1 1))"));
+    }
 }
