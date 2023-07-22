@@ -37,5 +37,5 @@ public class FunctionExpressionNode implements ExpressionNode {
     }
     private final Value value;
     private final Value name;
-    ExpressionNode[] parameters;
+    public ExpressionNode[] parameters;
 }

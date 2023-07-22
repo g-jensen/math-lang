@@ -75,11 +75,7 @@ class FunctionExpressionNodeTest {
         ExpressionNode params = new ListExpressionNode(new Value[0]);
         ExpressionNode one = new ConstantExpressionNode(new Value("1"));
 
-        ExpressionNode[] p1 = new ExpressionNode[]{
-                name,
-                params,
-                one
-        };
+        ExpressionNode[] p1 = new ExpressionNode[]{name, params, one};
         FunctionExpressionNode e1 = new FunctionExpressionNode(p1);
         assertEquals(new Value("1"),e1.call(new ListExpressionNode(new Value[0])));
 
