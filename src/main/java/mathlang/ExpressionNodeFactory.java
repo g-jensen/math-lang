@@ -60,6 +60,8 @@ public class ExpressionNodeFactory {
     private ExpressionNode createConstantNodeFromFunctionCall(String[] tokens, int tokenIndex) {
         try {
             FunctionExpressionNode f = treeBuilder.definedFunctions.get(tokens[tokenIndex]);
+            // TODO - replace "new Value[0]" with list of parameter values
+            // will need to test creating functions with parameters first.
             Value v = f.call(new ListExpressionNode(new Value[0]));
             return new ConstantExpressionNode(v);
         } catch (MissingParametersException | MismatchParameterCountException e) {
