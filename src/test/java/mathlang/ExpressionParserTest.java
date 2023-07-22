@@ -141,5 +141,8 @@ class ExpressionParserTest {
 
         String[] t2 = {"(","fun","otherFun","[","]","(","+","1","1",")",")"};
         assertArrayEquals(t2, parser.getTokens("(fun otherFun [] (+ 1 1))"));
+
+        String[] t3 = {"fun","myFun2","[","]","1"};
+        assertArrayEquals(t3, parser.getTokens("fun myFun2 [] 1"));
     }
 }

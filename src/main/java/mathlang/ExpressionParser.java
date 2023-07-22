@@ -1,15 +1,23 @@
 package mathlang;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 public class ExpressionParser {
+    public ExpressionParser() {
+        specialChars = new Character[]{' ', '(', ')'};
+    }
 
     private boolean isPartOfNumber(char c) {
         return  c == '.' ||
                 c == '-' ||
                 c == '+' ||
                 Character.isDigit(c);
+    }
+
+    private boolean isNotSpecialChar(Character c) {
+        return !Arrays.asList(specialChars).contains(c);
     }
 
     public String parse(String input, int startIndex, Predicate<Character> pred) {
@@ -34,7 +42,7 @@ public class ExpressionParser {
                 tokens.add(n);
                 i += n.length()-1;
             } else if (Character.isAlphabetic(c)) {
-                String w = parse(input,i,Character::isAlphabetic);
+                String w = parse(input,i,this::isNotSpecialChar);
                 tokens.add(w);
                 i += w.length()-1;
             } else if (c != ' '){
@@ -43,4 +51,5 @@ public class ExpressionParser {
         }
         return tokens.toArray(new String[0]);
     }
+    Character[] specialChars;
 }
