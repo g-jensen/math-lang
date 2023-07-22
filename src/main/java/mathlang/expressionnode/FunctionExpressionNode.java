@@ -1,15 +1,25 @@
 package mathlang.expressionnode;
 
+import mathlang.ExpressionNodeFactory;
+import mathlang.ExpressionTreeBuilder;
 import mathlang.NullValue;
 import mathlang.Value;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+
 public class FunctionExpressionNode implements ExpressionNode {
-    public FunctionExpressionNode(ExpressionNode[] parameters) throws FunctionParameterCountException, SymbolNameException {
-        this.parameters = parameters;
-        if (parameters.length < 3) {
-            throw new FunctionParameterCountException(3,parameters.length);
+    public FunctionExpressionNode(String[] tokens) throws FunctionParameterCountException, SymbolNameException {
+        this.tokens = tokens;
+        this.scope = new ExpressionTreeBuilder();
+        this.name = new Value(tokens[1]);
+        this.parameters = scope.nodeFactory.createNode(tokens,2);
+        try {
+            this.parameterNames = ((ListExpressionNode)parameters).values;
+        } catch (Exception e) {
+            throw new FunctionParameterCountException(1,0);
         }
-        this.name = parameters[0].evaluate();
         if (!name.isWord()) {
             throw new SymbolNameException(name);
         }
@@ -20,22 +30,23 @@ public class FunctionExpressionNode implements ExpressionNode {
         return value;
     }
     public Value call(ListExpressionNode parameterValues) throws MissingParametersException, MismatchParameterCountException {
-        ListExpressionNode parameterNames;
-        try {
-            parameterNames = (ListExpressionNode) parameters[1];
-        } catch (Exception e) {
-            throw new MissingParametersException(value.toString());
+        if (parameterValues.values.length != parameterNames.length) {
+            throw new MismatchParameterCountException(parameterValues.values.length,parameterNames.length);
         }
-        if (parameterValues.values.length != parameterNames.values.length) {
-            throw new MismatchParameterCountException(parameterValues.values.length,parameterNames.values.length);
+        int startOfOperation = parameterNames.length+4;
+        for (int i = startOfOperation; i < tokens.length; i++) {
+            for (int k = 0; k < parameterNames.length; k++) {
+                if (tokens[i].equals(parameterNames[k].toString())) {
+                    scope.nodeFactory.definedSymbols.put(tokens[i],parameterValues.values[k]);
+                }
+            }
         }
-        Value lastValue = new NullValue();
-        for (int i = 2; i < parameters.length; i++) {
-            lastValue = parameters[i].evaluate();
-        }
-        return lastValue;
+        return scope.build(Arrays.copyOfRange(tokens,startOfOperation, tokens.length)).evaluate();
     }
+    private final String[] tokens;
     private final Value value;
-    private final Value name;
-    public ExpressionNode[] parameters;
+    private final ExpressionNode parameters;
+    private final Value[] parameterNames;
+    public final Value name;
+    public ExpressionTreeBuilder scope;
 }

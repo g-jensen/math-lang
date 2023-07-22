@@ -4,19 +4,27 @@ import mathlang.expressionnode.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ExpressionNodeFactory {
     public ExpressionNodeFactory(ExpressionTreeBuilder treeBuilder) {
         this.treeBuilder = treeBuilder;
         this.specialTokens = new String[]{"(",")","[","]","+","-","*","/","exp","ln","sin","cos","def","fun"};
+
+        this.definedSymbols = new HashMap<>();
+        definedSymbols.put("e",new Value("2.718281828459045"));
+        definedSymbols.put("tao",new Value("6.283185307179586"));
+
+        this.definedFunctions = new HashMap<>();
     }
     public ExpressionNode createNode(String[] tokens, int tokenIndex) {
         String token = tokens[tokenIndex];
         if (Utils.isNumeric(token)) {
             return createConstantNodeFromNumber(tokens, tokenIndex);
-        } else if (treeBuilder.definedSymbols.containsKey(token)) {
+        } else if (definedSymbols.containsKey(token)) {
             return createConstantNodeFromSymbol(tokens, tokenIndex);
-        } else if (treeBuilder.definedFunctions.containsKey(token)) {
+        } else if (definedFunctions.containsKey(token)) {
             return createConstantNodeFromFunctionCall(tokens,tokenIndex);
         } else if (!isSpecial(token)) {
             return createNullNode();
@@ -55,11 +63,11 @@ public class ExpressionNodeFactory {
         return new ConstantExpressionNode(new Value(tokens[tokenIndex]));
     }
     private ExpressionNode createConstantNodeFromSymbol(String[] tokens, int tokenIndex) {
-        return new ConstantExpressionNode(treeBuilder.definedSymbols.get(tokens[tokenIndex]));
+        return new ConstantExpressionNode(definedSymbols.get(tokens[tokenIndex]));
     }
     private ExpressionNode createConstantNodeFromFunctionCall(String[] tokens, int tokenIndex) {
         try {
-            FunctionExpressionNode f = treeBuilder.definedFunctions.get(tokens[tokenIndex]);
+            FunctionExpressionNode f = definedFunctions.get(tokens[tokenIndex]);
             // TODO - replace "new Value[0]" with list of parameter values
             // will need to test creating functions with parameters first.
             Value v = f.call(new ListExpressionNode(new Value[0]));
@@ -95,7 +103,7 @@ public class ExpressionNodeFactory {
             ExpressionNode n = new ConstantExpressionNode(new Value(symbol));
             String[] p2 = treeBuilder.nextParameter(tokens,tokenIndex+1);
             ExpressionNode value = treeBuilder.build(p2);
-            treeBuilder.definedSymbols.put(symbol,value.evaluate());
+            definedSymbols.put(symbol,value.evaluate());
             return new DefinitionExpressionNode(n,value);
         } catch (Exception e) {
             return new NullExpressionNode();
@@ -114,19 +122,8 @@ public class ExpressionNodeFactory {
     }
     private ExpressionNode createFunctionNode(String[] tokens, int tokenIndex) {
         try {
-            ArrayList<ExpressionNode> parameters = new ArrayList<>();
-            String strName = tokens[tokenIndex+1];
-            ExpressionNode name = new ConstantExpressionNode(new Value(strName));
-            ExpressionNode params = createListNode(tokens,tokenIndex+2);
-            parameters.add(name);
-            parameters.add(params);
-            for (int i = tokenIndex+2; i < tokens.length-1; i++) {
-                String[] p = treeBuilder.nextParameter(tokens,i);
-                i += p.length-1;
-                parameters.add(treeBuilder.build(p));
-            }
-            FunctionExpressionNode n = new FunctionExpressionNode(parameters.toArray(new ExpressionNode[0]));
-            treeBuilder.definedFunctions.put(strName,n);
+            FunctionExpressionNode n = new FunctionExpressionNode(Arrays.copyOfRange(tokens,tokenIndex,tokens.length));
+            definedFunctions.put(n.name.toString(),n);
             return n;
         } catch (FunctionParameterCountException | SymbolNameException e) {
             return new ConstantExpressionNode(new Value(e.getMessage()));
@@ -136,4 +133,6 @@ public class ExpressionNodeFactory {
     }
     private ExpressionTreeBuilder treeBuilder;
     private String[] specialTokens;
+    public Map<String, Value> definedSymbols;
+    public Map<String, FunctionExpressionNode> definedFunctions;
 }

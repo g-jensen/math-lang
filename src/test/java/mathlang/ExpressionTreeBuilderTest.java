@@ -143,21 +143,6 @@ class ExpressionTreeBuilderTest {
     }
 
     @Test
-    void addsDefinedSymbolToMap() {
-        ExpressionTreeBuilder b = new ExpressionTreeBuilder();
-
-        assertFalse(b.definedSymbols.containsKey("greg"));
-        b.build(new String[]{"def","greg","5"});
-        assertTrue(b.definedSymbols.containsKey("greg"));
-        assertEquals(new Value("5"),b.definedSymbols.get("greg"));
-
-        assertFalse(b.definedSymbols.containsKey("hello"));
-        b.build(new String[]{"def","hello","(","+","2","5",")"});
-        assertTrue(b.definedSymbols.containsKey("hello"));
-        assertEquals(new Value("7"),b.definedSymbols.get("hello"));
-    }
-
-    @Test
     void buildsExpressionTreeForList() {
         ExpressionTreeBuilder b = new ExpressionTreeBuilder();
 
@@ -198,25 +183,22 @@ class ExpressionTreeBuilderTest {
         FunctionExpressionNode f1 = (FunctionExpressionNode) n1;
         assertEquals(new Value("FunctionExpression: one"),f1.evaluate());
         assertEquals(new Value("1"),f1.call(new ListExpressionNode(new Value[0])));
-    }
 
-    @Test
-    void addsDefinedFunctionToMap() {
-        ExpressionTreeBuilder b = new ExpressionTreeBuilder();
-
-        String[] t1 = {"fun","one","[","]","1"};
-        assertFalse(b.definedFunctions.containsKey("one"));
-        b.build(t1);
-        assertTrue(b.definedFunctions.containsKey("one"));
+        String[] t2 = {"fun","addTwo","[","n","]","(","+","n","2",")"};
+        ExpressionNode n2 = b.build(t2);
+        assertInstanceOf(FunctionExpressionNode.class,n2);
+        FunctionExpressionNode f2 = (FunctionExpressionNode) n2;
+        assertEquals(new Value("FunctionExpression: addTwo"),f2.evaluate());
+        Value[] p2 = new Value[]{new Value("1")};
+        assertEquals(new Value("3"),f2.call(new ListExpressionNode(p2)));
     }
 
     @Test
     void canCallDefinedFunction() {
         ExpressionTreeBuilder b = new ExpressionTreeBuilder();
-
-        String[] t1 = {"fun","one","[","]","1"};
+        String[] t1 = {"fun","won","[","]","1"};
         b.build(t1);
-        String[] t2 = {"one"};
+        String[] t2 = {"won"};
         assertEquals(new Value("1"),b.build(t2).evaluate());
     }
 }

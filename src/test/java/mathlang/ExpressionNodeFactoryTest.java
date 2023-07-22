@@ -147,6 +147,21 @@ class ExpressionNodeFactoryTest {
     }
 
     @Test
+    void addsDefinedSymbolToMap() {
+        ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
+
+        assertFalse(factory.definedSymbols.containsKey("greg"));
+        factory.createNode(new String[]{"def","greg","5"},0);
+        assertTrue(factory.definedSymbols.containsKey("greg"));
+        assertEquals(new Value("5"),factory.definedSymbols.get("greg"));
+
+        assertFalse(factory.definedSymbols.containsKey("hello"));
+        factory.createNode(new String[]{"def","hello","(","+","2","5",")"},0);
+        assertTrue(factory.definedSymbols.containsKey("hello"));
+        assertEquals(new Value("7"),factory.definedSymbols.get("hello"));
+    }
+
+    @Test
     void createsListNodeIfTokenIsBracket() {
         ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
 
@@ -160,5 +175,15 @@ class ExpressionNodeFactoryTest {
 
         String[] t1 = {"fun","one","[","]","1"};
         assertInstanceOf(FunctionExpressionNode.class,factory.createNode(t1,0));
+    }
+
+    @Test
+    void addsDefinedFunctionToMap() {
+        ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
+
+        String[] t1 = {"fun","one","[","]","1"};
+        assertFalse(factory.definedFunctions.containsKey("one"));
+        factory.createNode(t1,0);
+        assertTrue(factory.definedFunctions.containsKey("one"));
     }
 }
