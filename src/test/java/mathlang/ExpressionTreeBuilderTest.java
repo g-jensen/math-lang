@@ -156,4 +156,35 @@ class ExpressionTreeBuilderTest {
         assertTrue(b.definedSymbols.containsKey("hello"));
         assertEquals(new Value("7"),b.definedSymbols.get("hello"));
     }
+
+    @Test
+    void buildsExpressionTreeForList() {
+        ExpressionTreeBuilder b = new ExpressionTreeBuilder();
+
+        ExpressionNode n1 = b.build(new String[]{"[","]"});
+        assertInstanceOf(ListExpressionNode.class,n1);
+        ListExpressionNode l1 = (ListExpressionNode)n1;
+        assertEquals(new Value("[]"),l1.evaluate());
+        assertArrayEquals(l1.values,new Value[0]);
+
+        ExpressionNode n2 = b.build(new String[]{"[","1","]"});
+        assertInstanceOf(ListExpressionNode.class,n2);
+        ListExpressionNode l2 = (ListExpressionNode)n2;
+        assertEquals(new Value("[1]"),l2.evaluate());
+        assertArrayEquals(l2.values,new Value[]{new Value("1")});
+
+        ExpressionNode n3 = b.build(new String[]{"[","1","2","3","]"});
+        assertInstanceOf(ListExpressionNode.class,n3);
+        ListExpressionNode l3 = (ListExpressionNode)n3;
+        assertEquals(new Value("[1 2 3]"),l3.evaluate());
+        Value[] v3 = {new Value("1"),new Value("2"),new Value("3")};
+        assertArrayEquals(l3.values,v3);
+
+        ExpressionNode n4 = b.build(new String[]{"[","greg","ham","g","poop","]"});
+        assertInstanceOf(ListExpressionNode.class,n4);
+        ListExpressionNode l4 = (ListExpressionNode)n4;
+        assertEquals(new Value("[greg ham g poop]"),l4.evaluate());
+        Value[] v4 = {new Value("greg"),new Value("ham"),new Value("g"),new Value("poop")};
+        assertArrayEquals(l4.values,v4);
+    }
 }

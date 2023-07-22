@@ -2,14 +2,13 @@ package mathlang;
 
 import mathlang.expressionnode.*;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ExpressionNodeFactory {
     public ExpressionNodeFactory(ExpressionTreeBuilder treeBuilder) {
         this.treeBuilder = treeBuilder;
-        this.specialTokens = new String[]{"(",")","+","-","*","/","exp","ln","sin","cos","def"};
+        this.specialTokens = new String[]{"(",")","[","]","+","-","*","/","exp","ln","sin","cos","def","fun"};
     }
     public ExpressionNode createNode(String[] tokens, int tokenIndex) {
         String token = tokens[tokenIndex];
@@ -37,6 +36,10 @@ public class ExpressionNodeFactory {
             return createUnaryNode(tokens,tokenIndex,CosineExpressionNode.class);
         } else if (token.equals("def")) {
             return createDefinitionNode(tokens,tokenIndex);
+        } else if (token.equals("[")) {
+            return createListNode(tokens,tokenIndex);
+        } else if (token.equals("fun")) {
+            return createFunctionNode(tokens,tokenIndex);
         }
         return null;
     }
@@ -79,6 +82,28 @@ public class ExpressionNodeFactory {
             ExpressionNode value = treeBuilder.build(p2);
             treeBuilder.definedSymbols.put(symbol,value.evaluate());
             return new DefinitionExpressionNode(n,value);
+        } catch (Exception e) {
+            return new NullExpressionNode();
+        }
+    }
+    private ExpressionNode createListNode(String[] tokens, int tokenIndex) {
+        ArrayList<Value> values = new ArrayList<>();
+        for (int i = tokenIndex+1; i < tokens.length; i++) {
+            String token = tokens[i];
+            if (token.equals("]")) {
+                return new ListExpressionNode(values.toArray(new Value[0]));
+            }
+            values.add(new Value(token));
+        }
+        return new NullExpressionNode();
+    }
+    private ExpressionNode createFunctionNode(String[] tokens, int tokenIndex) {
+        try {
+            String name = tokens[tokenIndex+1];
+            ExpressionNode n = new ConstantExpressionNode(new Value(name));
+            return new FunctionExpressionNode(null);
+        } catch (FunctionParameterCountException | SymbolNameException e) {
+            return new ConstantExpressionNode(new Value(e.getMessage()));
         } catch (Exception e) {
             return new NullExpressionNode();
         }

@@ -139,6 +139,14 @@ class ExpressionNodeFactoryTest {
     }
 
     @Test
+    void createsListNodeIfTokenIsBracket() {
+        ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
+
+        String[] t1 = {"[","]"};
+        assertInstanceOf(ListExpressionNode.class,factory.createNode(t1,0));
+    }
+
+    @Test
     void createsDefinitionNodeIfTokenIsDef() {
         ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
 
