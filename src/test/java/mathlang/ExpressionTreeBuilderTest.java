@@ -182,15 +182,15 @@ class ExpressionTreeBuilderTest {
         assertInstanceOf(FunctionExpressionNode.class,n1);
         FunctionExpressionNode f1 = (FunctionExpressionNode) n1;
         assertEquals(new Value("FunctionExpression: one"),f1.evaluate());
-        assertEquals(new Value("1"),f1.call(new ListExpressionNode(new Value[0])));
+        assertEquals(new Value("1"),f1.call(new ExpressionNode[0]).evaluate());
 
         String[] t2 = {"fun","addTwo","[","n","]","(","+","n","2",")"};
         ExpressionNode n2 = b.build(t2);
         assertInstanceOf(FunctionExpressionNode.class,n2);
         FunctionExpressionNode f2 = (FunctionExpressionNode) n2;
         assertEquals(new Value("FunctionExpression: addTwo"),f2.evaluate());
-        Value[] p2 = new Value[]{new Value("1")};
-        assertEquals(new Value("3"),f2.call(new ListExpressionNode(p2)));
+        ExpressionNode[] p2 = new ExpressionNode[]{new ConstantExpressionNode(new Value("1"))};
+        assertEquals(new Value("3"),f2.call(p2).evaluate());
     }
 
     @Test
@@ -200,5 +200,14 @@ class ExpressionTreeBuilderTest {
         b.build(t1);
         String[] t2 = {"won"};
         assertEquals(new Value("1"),b.build(t2).evaluate());
+
+        String[] t3 = {"fun","add","[","a","b","]","(","+","a","b",")"};
+        b.build(t3);
+        String[] t4 = {"add","1","2"};
+        assertEquals(new Value("3"),b.build(t4).evaluate());
+        String[] t5 = {"(","add","1","2",")"};
+        assertEquals(new Value("3"),b.build(t5).evaluate());
+        String[] t6 = {"(","add","(","+","1","1",")","2",")"};
+        assertEquals(new Value("4"),b.build(t6).evaluate());
     }
 }

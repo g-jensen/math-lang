@@ -42,7 +42,7 @@ class FunctionExpressionNodeTest {
         String def = "fun greg [a] 1";
         FunctionExpressionNode e = new FunctionExpressionNode(p.getTokens(def));
         assertThrows(MismatchParameterCountException.class,
-                ()->e.call(new ListExpressionNode(new Value[0]))
+                ()->e.call(new ExpressionNode[0])
         );
     }
 
@@ -51,6 +51,6 @@ class FunctionExpressionNodeTest {
         ExpressionParser p = new ExpressionParser();
         String def = "fun hello [] 2";
         FunctionExpressionNode f = new FunctionExpressionNode(p.getTokens(def));
-        assertEquals(new Value("2"),f.call(new ListExpressionNode(new Value[0])));
+        assertEquals(new Value("2"),f.call(new ExpressionNode[0]).evaluate());
     }
 }

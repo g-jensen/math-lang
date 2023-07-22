@@ -17,6 +17,7 @@ public class FunctionExpressionNode implements ExpressionNode {
         this.parameters = scope.nodeFactory.createNode(tokens,2);
         try {
             this.parameterNames = ((ListExpressionNode)parameters).values;
+            this.parameterCount = parameterNames.length;
         } catch (Exception e) {
             throw new FunctionParameterCountException(1,0);
         }
@@ -29,24 +30,25 @@ public class FunctionExpressionNode implements ExpressionNode {
     public Value evaluate() {
         return value;
     }
-    public Value call(ListExpressionNode parameterValues) throws MissingParametersException, MismatchParameterCountException {
-        if (parameterValues.values.length != parameterNames.length) {
-            throw new MismatchParameterCountException(parameterValues.values.length,parameterNames.length);
+    public ExpressionNode call(ExpressionNode[] parameters) throws MissingParametersException, MismatchParameterCountException {
+        if (parameters.length != parameterNames.length) {
+            throw new MismatchParameterCountException(parameters.length,parameterNames.length);
         }
         int startOfOperation = parameterNames.length+4;
         for (int i = startOfOperation; i < tokens.length; i++) {
             for (int k = 0; k < parameterNames.length; k++) {
                 if (tokens[i].equals(parameterNames[k].toString())) {
-                    scope.nodeFactory.definedSymbols.put(tokens[i],parameterValues.values[k]);
+                    scope.nodeFactory.definedSymbols.put(tokens[i],parameters[k].evaluate());
                 }
             }
         }
-        return scope.build(Arrays.copyOfRange(tokens,startOfOperation, tokens.length)).evaluate();
+        return scope.build(Arrays.copyOfRange(tokens,startOfOperation, tokens.length));
     }
     private final String[] tokens;
     private final Value value;
     private final ExpressionNode parameters;
     private final Value[] parameterNames;
     public final Value name;
+    public final int parameterCount;
     public ExpressionTreeBuilder scope;
 }
