@@ -16,6 +16,8 @@ public class ExpressionNodeFactory {
             return createConstantNodeFromNumber(tokens, tokenIndex);
         } else if (treeBuilder.definedSymbols.containsKey(token)) {
             return createConstantNodeFromSymbol(tokens, tokenIndex);
+        } else if (treeBuilder.definedFunctions.containsKey(token)) {
+            return createConstantNodeFromFunctionCall(tokens,tokenIndex);
         } else if (!isSpecial(token)) {
             return createNullNode();
         } else if (token.equals("+")) {
@@ -54,6 +56,17 @@ public class ExpressionNodeFactory {
     }
     private ExpressionNode createConstantNodeFromSymbol(String[] tokens, int tokenIndex) {
         return new ConstantExpressionNode(treeBuilder.definedSymbols.get(tokens[tokenIndex]));
+    }
+    private ExpressionNode createConstantNodeFromFunctionCall(String[] tokens, int tokenIndex) {
+        try {
+            FunctionExpressionNode f = treeBuilder.definedFunctions.get(tokens[tokenIndex]);
+            Value v = f.call(new ListExpressionNode(new Value[0]));
+            return new ConstantExpressionNode(v);
+        } catch (MissingParametersException | MismatchParameterCountException e) {
+            return new ConstantExpressionNode(new Value(e.getMessage()));
+        } catch (Exception e) {
+            return new NullExpressionNode();
+        }
     }
     private ExpressionNode createBinaryNode(String[] tokens, int tokenIndex, Class<? extends BinaryExpressionNode> c) {
         try {
@@ -99,9 +112,20 @@ public class ExpressionNodeFactory {
     }
     private ExpressionNode createFunctionNode(String[] tokens, int tokenIndex) {
         try {
-            String name = tokens[tokenIndex+1];
-            ExpressionNode n = new ConstantExpressionNode(new Value(name));
-            return new FunctionExpressionNode(null);
+            ArrayList<ExpressionNode> parameters = new ArrayList<>();
+            String strName = tokens[tokenIndex+1];
+            ExpressionNode name = new ConstantExpressionNode(new Value(strName));
+            ExpressionNode params = createListNode(tokens,tokenIndex+2);
+            parameters.add(name);
+            parameters.add(params);
+            for (int i = tokenIndex+2; i < tokens.length-1; i++) {
+                String[] p = treeBuilder.nextParameter(tokens,i);
+                i += p.length-1;
+                parameters.add(treeBuilder.build(p));
+            }
+            FunctionExpressionNode n = new FunctionExpressionNode(parameters.toArray(new ExpressionNode[0]));
+            treeBuilder.definedFunctions.put(strName,n);
+            return n;
         } catch (FunctionParameterCountException | SymbolNameException e) {
             return new ConstantExpressionNode(new Value(e.getMessage()));
         } catch (Exception e) {

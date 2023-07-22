@@ -187,4 +187,36 @@ class ExpressionTreeBuilderTest {
         Value[] v4 = {new Value("greg"),new Value("ham"),new Value("g"),new Value("poop")};
         assertArrayEquals(l4.values,v4);
     }
+
+    @Test
+    void buildsExpressionTreeForFunctionDef() throws MissingParametersException, MismatchParameterCountException {
+        ExpressionTreeBuilder b = new ExpressionTreeBuilder();
+
+        String[] t1 = {"fun","one","[","]","1"};
+        ExpressionNode n1 = b.build(t1);
+        assertInstanceOf(FunctionExpressionNode.class,n1);
+        FunctionExpressionNode f1 = (FunctionExpressionNode) n1;
+        assertEquals(new Value("FunctionExpression: one"),f1.evaluate());
+        assertEquals(new Value("1"),f1.call(new ListExpressionNode(new Value[0])));
+    }
+
+    @Test
+    void addsDefinedFunctionToMap() {
+        ExpressionTreeBuilder b = new ExpressionTreeBuilder();
+
+        String[] t1 = {"fun","one","[","]","1"};
+        assertFalse(b.definedFunctions.containsKey("one"));
+        b.build(t1);
+        assertTrue(b.definedFunctions.containsKey("one"));
+    }
+
+    @Test
+    void canCallDefinedFunction() {
+        ExpressionTreeBuilder b = new ExpressionTreeBuilder();
+
+        String[] t1 = {"fun","one","[","]","1"};
+        b.build(t1);
+        String[] t2 = {"one"};
+        assertEquals(new Value("1"),b.build(t2).evaluate());
+    }
 }

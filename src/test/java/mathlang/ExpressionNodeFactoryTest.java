@@ -139,6 +139,14 @@ class ExpressionNodeFactoryTest {
     }
 
     @Test
+    void createsDefinitionNodeIfTokenIsDef() {
+        ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
+
+        String[] t1 = {"def","greg","10"};
+        assertInstanceOf(DefinitionExpressionNode.class,factory.createNode(t1,0));
+    }
+
+    @Test
     void createsListNodeIfTokenIsBracket() {
         ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
 
@@ -147,10 +155,10 @@ class ExpressionNodeFactoryTest {
     }
 
     @Test
-    void createsDefinitionNodeIfTokenIsDef() {
+    void createsFunctionNodeIfTokenIsFun() {
         ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
 
-        String[] t1 = {"def","greg","10"};
-        assertInstanceOf(DefinitionExpressionNode.class,factory.createNode(t1,0));
+        String[] t1 = {"fun","one","[","]","1"};
+        assertInstanceOf(FunctionExpressionNode.class,factory.createNode(t1,0));
     }
 }

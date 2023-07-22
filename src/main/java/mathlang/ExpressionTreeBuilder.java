@@ -1,6 +1,7 @@
 package mathlang;
 
 import mathlang.expressionnode.ExpressionNode;
+import mathlang.expressionnode.FunctionExpressionNode;
 import mathlang.expressionnode.NullExpressionNode;
 
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ public class ExpressionTreeBuilder {
         this.definedSymbols = new HashMap<>();
         definedSymbols.put("e",new Value("2.718281828459045"));
         definedSymbols.put("tao",new Value("6.283185307179586"));
+
+        this.definedFunctions = new HashMap<>();
     }
     public ExpressionNode build(String[] tokens) {
         ExpressionNodeFactory nodeFactory = new ExpressionNodeFactory(this);
@@ -47,4 +50,5 @@ public class ExpressionTreeBuilder {
         return outputTokens.toArray(new String[0]);
     }
     public Map<String, Value> definedSymbols;
+    public Map<String, FunctionExpressionNode> definedFunctions;
 }
