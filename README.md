@@ -2,6 +2,10 @@
 Basic Math Language
 
 ## Running
+download from releases and run `java -jar math-lang.jar`
+
+or
+
 just run `Main` found in `org`
 ## Features
 * Basic Math Functions
