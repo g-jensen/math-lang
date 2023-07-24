@@ -1,8 +1,6 @@
 package mathlang;
 
-import mathlang.expressionnode.FunctionExpressionNode;
-import mathlang.expressionnode.FunctionParameterCountException;
-import mathlang.expressionnode.SymbolNameException;
+import mathlang.expressionnode.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -12,9 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class ScopeTest {
 
     @Test
-    void initializesAScope() throws FunctionParameterCountException, SymbolNameException {
+    void initializesAScope() {
         Value v = new Value("hello");
-        FunctionExpressionNode f = new FunctionExpressionNode(new String[]{"fun","a","[","]","1"});
+        ListExpressionNode l = new ListExpressionNode(new Value[0]);
+        ExpressionNode body = new ConstantExpressionNode(new Value("1"));
+        FunctionExpressionNode f = new FunctionExpressionNode(l,body);
         HashMap<String, Value> symbols = new HashMap<>();
         HashMap<String,FunctionExpressionNode> functions = new HashMap<>();
         functions.put("f",f);

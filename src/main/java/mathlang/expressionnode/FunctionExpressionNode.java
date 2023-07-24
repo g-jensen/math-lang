@@ -2,50 +2,30 @@ package mathlang.expressionnode;
 
 import mathlang.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-
 public class FunctionExpressionNode implements ExpressionNode {
-    public FunctionExpressionNode(String[] tokens) throws FunctionParameterCountException, SymbolNameException {
-        this.tokens = tokens;
-        this.scope = new ExpressionTreeBuilder();
-        this.name = new Value(tokens[1]);
-        this.parameters = scope.nodeFactory.createNode(tokens,2);
-        try {
-            this.parameterNames = ((ListExpressionNode)parameters).values;
-            this.parameterCount = parameterNames.length;
-        } catch (Exception e) {
-            throw new FunctionParameterCountException(1,0);
-        }
-        if (!name.isWord()) {
-            throw new SymbolNameException(name);
-        }
-        this.value = new Value("FunctionExpression: " + name.toString());
+    public FunctionExpressionNode(ListExpressionNode params, ExpressionNode body) {
+        this.body = body;
+        this.params = params;
+        this.parameterCount = params.values.length;
+        this.scope = new Scope();
     }
     @Override
     public Value evaluate(Scope scope) {
-        return value;
+        this.scope.definedSymbols.putAll(scope.definedSymbols);
+        return body.evaluate(this.scope);
     }
-    public ExpressionNode call(ExpressionNode[] parameters) throws MissingParametersException, MismatchParameterCountException {
-        if (parameters.length != parameterNames.length) {
-            throw new MismatchParameterCountException(parameters.length,parameterNames.length);
-        }
-        int startOfOperation = parameterNames.length+4;
-        for (int i = startOfOperation; i < tokens.length; i++) {
-            for (int k = 0; k < parameterNames.length; k++) {
-                if (tokens[i].equals(parameterNames[k].toString())) {
-                    scope.nodeFactory.definedSymbols.put(tokens[i],parameters[k].evaluate(new Scope(null,null)));
-                }
+    public void setParameterValues(ExpressionNode[] values) throws MismatchParameterCountException {
+        scope = new Scope();
+        try {
+            for (int i = 0; i < params.values.length; i++) {
+                scope.definedSymbols.put(params.values[i].toString(),values[i].evaluate(scope));
             }
+        } catch (Exception e) {
+            throw new MismatchParameterCountException(values.length,params.values.length);
         }
-        return scope.build(Arrays.copyOfRange(tokens,startOfOperation, tokens.length));
     }
-    private final String[] tokens;
-    private final Value value;
-    private final ExpressionNode parameters;
-    private final Value[] parameterNames;
-    public final Value name;
-    public final int parameterCount;
-    public ExpressionTreeBuilder scope;
+    public int parameterCount;
+    private Scope scope;
+    private ExpressionNode body;
+    private ListExpressionNode params;
 }

@@ -8,50 +8,26 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FunctionExpressionNodeTest {
-
     @Test
-    void throwsParameterCountException() {
-        ExpressionParser p = new ExpressionParser();
-        String def = "fun 1 2 3";
-        assertThrows(
-                FunctionParameterCountException.class,
-                ()-> new FunctionExpressionNode(p.getTokens(def))
-        );
+    void evaluatesWithNoParameters() {
+        ListExpressionNode l = new ListExpressionNode(new Value[0]);
+        ExpressionNode body = new ConstantExpressionNode(new Value("1"));
+        ExpressionNode e = new FunctionExpressionNode(l, body);
+        assertEquals(new Value("1"),e.evaluate(new Scope()));
     }
 
     @Test
-    void throwsFunctionNameException() {
-        ExpressionParser p = new ExpressionParser();
-        String def = "fun 1 [] 2";
-        assertThrows(
-                SymbolNameException.class,
-                ()-> new FunctionExpressionNode(p.getTokens(def))
-        );
-    }
+    void evaluatesWithParameters() throws MismatchParameterCountException {
+        Value[] params = new Value[]{new Value("a"),new Value("b")};
+        ExpressionNode one = new ConstantExpressionNode(new Value("1"));
+        ExpressionNode two = new ConstantExpressionNode(new Value("2"));
+        ListExpressionNode l = new ListExpressionNode(params);
+        ExpressionNode a = new SymbolExpressionNode("a");
+        ExpressionNode b = new SymbolExpressionNode("b");
+        ExpressionNode body = new AdditionExpressionNode(a,b);
+        FunctionExpressionNode f = new FunctionExpressionNode(l, body);
 
-    @Test
-    void evaluates() throws SymbolNameException, FunctionParameterCountException {
-        ExpressionParser p = new ExpressionParser();
-        String def = "fun greg [] 2";
-        ExpressionNode e = new FunctionExpressionNode(p.getTokens(def));
-        assertEquals(new Value("FunctionExpression: greg"),e.evaluate(new Scope()));
-    }
-
-    @Test
-    void throwsMismatchParametersException() throws FunctionParameterCountException, SymbolNameException {
-        ExpressionParser p = new ExpressionParser();
-        String def = "fun greg [a] 1";
-        FunctionExpressionNode e = new FunctionExpressionNode(p.getTokens(def));
-        assertThrows(MismatchParameterCountException.class,
-                ()->e.call(new ExpressionNode[0])
-        );
-    }
-
-    @Test
-    void callsFunctionWithNoParametersOrDefs() throws FunctionParameterCountException, SymbolNameException, MissingParametersException, MismatchParameterCountException {
-        ExpressionParser p = new ExpressionParser();
-        String def = "fun hello [] 2";
-        FunctionExpressionNode f = new FunctionExpressionNode(p.getTokens(def));
-        assertEquals(new Value("2"),f.call(new ExpressionNode[0]).evaluate(new Scope()));
+        f.setParameterValues(new ExpressionNode[]{one,two});
+        assertEquals(new Value("3"),f.evaluate(new Scope()));
     }
 }
