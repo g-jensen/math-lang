@@ -27,7 +27,7 @@ public class ExpressionNodeFactory {
         } else if (definedFunctions.containsKey(token)) {
             return createConstantNodeFromFunctionCall(tokens,tokenIndex);
         } else if (!isSpecial(token)) {
-            return createNullNode();
+            return new SymbolExpressionNode(token);
         } else if (token.equals("+")) {
             return createBinaryNode(tokens,tokenIndex,AdditionExpressionNode.class);
         } else if (token.equals("-")) {
@@ -130,7 +130,8 @@ public class ExpressionNodeFactory {
             String name = treeBuilder.nextParameter(tokens,tokenIndex)[0];
             String[] ps = Arrays.copyOfRange(tokens,tokenIndex+2,tokens.length);
             ListExpressionNode params = (ListExpressionNode)treeBuilder.build(ps);
-            String[] b = Arrays.copyOfRange(tokens,tokenIndex+2+ps.length,tokens.length);
+            String[] b = Arrays.copyOfRange(tokens,tokenIndex+params.values.length+4,tokens.length);
+            System.out.println(Arrays.toString(b));
             ExpressionNode body = treeBuilder.build(b);
             FunctionExpressionNode n = new FunctionExpressionNode(params,body);
             definedFunctions.put(name,n);

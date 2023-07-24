@@ -98,16 +98,16 @@ class ExpressionTreeBuilderTest {
     }
     
     @Test
-    void buildsNullExpressionForNonExistentFunctionCall() {
+    void buildsSymbolExpressionForNonExistentFunctionCall() {
         ExpressionTreeBuilder b = new ExpressionTreeBuilder();
         Scope s = new Scope();
 
         ExpressionNode n1 = b.build(new String[]{"p","1"});
-        assertInstanceOf(NullExpressionNode.class,n1);
+        assertInstanceOf(SymbolExpressionNode.class,n1);
         assertEquals(new NullValue(),n1.evaluate(s));
 
         ExpressionNode n2 = b.build(new String[]{"p","1","2"});
-        assertInstanceOf(NullExpressionNode.class,n2);
+        assertInstanceOf(SymbolExpressionNode.class,n2);
         assertEquals(new NullValue(),n2.evaluate(s));
     }
 
@@ -191,15 +191,13 @@ class ExpressionTreeBuilderTest {
         ExpressionNode n1 = b.build(t1);
         assertInstanceOf(FunctionExpressionNode.class,n1);
         assertEquals(new Value("1"),n1.evaluate(s));
-        //assertEquals(new Value("1"),f1.call(new ExpressionNode[0]).evaluate(s));
 
         String[] t2 = {"fun","addTwo","[","n","]","(","+","n","2",")"};
         ExpressionNode n2 = b.build(t2);
         assertInstanceOf(FunctionExpressionNode.class,n2);
         FunctionExpressionNode f2 = (FunctionExpressionNode) n2;
-        assertEquals(new Value("FunctionExpression: addTwo"),f2.evaluate(s));
-        ExpressionNode[] p2 = new ExpressionNode[]{new ConstantExpressionNode(new Value("1"))};
-        //assertEquals(new Value("3"),f2.call(p2).evaluate(s));
+        f2.setParameterValues(new ExpressionNode[]{new ConstantExpressionNode(new Value("1"))});
+        assertEquals(new Value("3"),f2.evaluate(s));
     }
 
     @Test

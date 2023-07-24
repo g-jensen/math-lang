@@ -19,14 +19,14 @@ class ExpressionNodeFactoryTest {
     }
 
     @Test
-    void createsNullNodeIfTokenIsNotSpecialAndNotNumber() {
+    void createsSymbolNodeIfTokenIsNotSpecialAndNotNumber() {
         ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
 
         String[] t1 = {"p"};
-        assertInstanceOf(NullExpressionNode.class,factory.createNode(t1,0));
+        assertInstanceOf(SymbolExpressionNode.class,factory.createNode(t1,0));
 
         String[] t2 = {"greg"};
-        assertInstanceOf(NullExpressionNode.class,factory.createNode(t2,0));
+        assertInstanceOf(SymbolExpressionNode.class,factory.createNode(t2,0));
     }
 
     @Test
