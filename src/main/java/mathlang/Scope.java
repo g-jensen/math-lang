@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Scope {
+    public Scope() {
+        this.definedSymbols = new HashMap<>();
+        this.definedFunctions = new HashMap<>();
+    }
     public Scope(Map<String,Value> definedSymbols, Map<String,FunctionExpressionNode> definedFunctions) {
         this.definedSymbols = new HashMap<>();
         this.definedFunctions = new HashMap<>();
