@@ -1,6 +1,7 @@
 package mathlang.expressionnode;
 
 import mathlang.NullValue;
+import mathlang.Scope;
 import mathlang.Value;
 import mathlang.expressionnode.ConstantExpressionNode;
 import mathlang.expressionnode.ExpressionNode;
@@ -20,8 +21,9 @@ class NaturalLogExpressionNodeTest {
         UnaryExpressionNode n2 = new NaturalLogExpressionNode(two);
         UnaryExpressionNode n3 = new NaturalLogExpressionNode(nullNode);
 
-        assertEquals(new Value("0"),n1.evaluate());
-        assertEquals(new Value(Double.toString(Math.log(2))),n2.evaluate());
-        assertEquals(new NullValue(),n3.evaluate());
+        Scope s = new Scope();
+        assertEquals(new Value("0"),n1.evaluate(s));
+        assertEquals(new Value(Double.toString(Math.log(2))),n2.evaluate(s));
+        assertEquals(new NullValue(),n3.evaluate(s));
     }
 }

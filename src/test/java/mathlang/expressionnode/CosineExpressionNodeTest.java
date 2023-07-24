@@ -1,6 +1,7 @@
 package mathlang.expressionnode;
 
 import mathlang.NullValue;
+import mathlang.Scope;
 import mathlang.Value;
 import mathlang.expressionnode.ConstantExpressionNode;
 import mathlang.expressionnode.CosineExpressionNode;
@@ -23,9 +24,10 @@ class CosineExpressionNodeTest {
         UnaryExpressionNode n3 = new CosineExpressionNode(two);
         UnaryExpressionNode n4 = new CosineExpressionNode(nullNode);
 
-        assertEquals(new Value("1"),n1.evaluate());
-        assertEquals(new Value(Double.toString(Math.cos(1))),n2.evaluate());
-        assertEquals(new Value(Double.toString(Math.cos(2))),n3.evaluate());
-        assertEquals(new NullValue(),n4.evaluate());
+        Scope s = new Scope();
+        assertEquals(new Value("1"),n1.evaluate(s));
+        assertEquals(new Value(Double.toString(Math.cos(1))),n2.evaluate(s));
+        assertEquals(new Value(Double.toString(Math.cos(2))),n3.evaluate(s));
+        assertEquals(new NullValue(),n4.evaluate(s));
     }
 }

@@ -107,7 +107,7 @@ public class ExpressionNodeFactory {
             ExpressionNode n = new ConstantExpressionNode(new Value(symbol));
             String[] p2 = treeBuilder.nextParameter(tokens,tokenIndex+1);
             ExpressionNode value = treeBuilder.build(p2);
-            definedSymbols.put(symbol,value.evaluate());
+            definedSymbols.put(symbol,value.evaluate(new Scope()));
             return new DefinitionExpressionNode(n,value);
         } catch (Exception e) {
             return new NullExpressionNode();

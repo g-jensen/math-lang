@@ -1,9 +1,6 @@
 package mathlang.expressionnode;
 
-import mathlang.ExpressionNodeFactory;
-import mathlang.ExpressionTreeBuilder;
-import mathlang.NullValue;
-import mathlang.Value;
+import mathlang.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +24,7 @@ public class FunctionExpressionNode implements ExpressionNode {
         this.value = new Value("FunctionExpression: " + name.toString());
     }
     @Override
-    public Value evaluate() {
+    public Value evaluate(Scope scope) {
         return value;
     }
     public ExpressionNode call(ExpressionNode[] parameters) throws MissingParametersException, MismatchParameterCountException {
@@ -38,7 +35,7 @@ public class FunctionExpressionNode implements ExpressionNode {
         for (int i = startOfOperation; i < tokens.length; i++) {
             for (int k = 0; k < parameterNames.length; k++) {
                 if (tokens[i].equals(parameterNames[k].toString())) {
-                    scope.nodeFactory.definedSymbols.put(tokens[i],parameters[k].evaluate());
+                    scope.nodeFactory.definedSymbols.put(tokens[i],parameters[k].evaluate(new Scope(null,null)));
                 }
             }
         }

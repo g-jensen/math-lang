@@ -1,6 +1,7 @@
 package mathlang.expressionnode;
 
 import mathlang.NullValue;
+import mathlang.Scope;
 import mathlang.Value;
 import mathlang.expressionnode.ConstantExpressionNode;
 import mathlang.expressionnode.ExponentialExpressionNode;
@@ -23,9 +24,10 @@ class ExponentialExpressionNodeTest {
         UnaryExpressionNode n3 = new ExponentialExpressionNode(two);
         UnaryExpressionNode n4 = new ExponentialExpressionNode(nullNode);
 
-        assertEquals(new Value("1"),n1.evaluate());
-        assertEquals(new Value(Double.toString(Math.exp(1))),n2.evaluate());
-        assertEquals(new Value(Double.toString(Math.exp(2))),n3.evaluate());
-        assertEquals(new NullValue(),n4.evaluate());
+        Scope s = new Scope();
+        assertEquals(new Value("1"),n1.evaluate(s));
+        assertEquals(new Value(Double.toString(Math.exp(1))),n2.evaluate(s));
+        assertEquals(new Value(Double.toString(Math.exp(2))),n3.evaluate(s));
+        assertEquals(new NullValue(),n4.evaluate(s));
     }
 }

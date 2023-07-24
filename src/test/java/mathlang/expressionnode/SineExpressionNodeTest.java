@@ -1,6 +1,7 @@
 package mathlang.expressionnode;
 
 import mathlang.NullValue;
+import mathlang.Scope;
 import mathlang.Value;
 import mathlang.expressionnode.ConstantExpressionNode;
 import mathlang.expressionnode.ExpressionNode;
@@ -23,9 +24,10 @@ class SineExpressionNodeTest {
         UnaryExpressionNode n3 = new SineExpressionNode(two);
         UnaryExpressionNode n4 = new SineExpressionNode(nullNode);
 
-        assertEquals(new Value("0"),n1.evaluate());
-        assertEquals(new Value(Double.toString(Math.sin(1))),n2.evaluate());
-        assertEquals(new Value(Double.toString(Math.sin(2))),n3.evaluate());
-        assertEquals(new NullValue(),n4.evaluate());
+        Scope s = new Scope();
+        assertEquals(new Value("0"),n1.evaluate(s));
+        assertEquals(new Value(Double.toString(Math.sin(1))),n2.evaluate(s));
+        assertEquals(new Value(Double.toString(Math.sin(2))),n3.evaluate(s));
+        assertEquals(new NullValue(),n4.evaluate(s));
     }
 }

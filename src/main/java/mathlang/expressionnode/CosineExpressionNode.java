@@ -1,14 +1,15 @@
 package mathlang.expressionnode;
 
 import mathlang.NullValue;
+import mathlang.Scope;
 import mathlang.Value;
 
 public class CosineExpressionNode extends UnaryExpressionNode {
     public CosineExpressionNode(ExpressionNode parameter) {
         super(parameter);
     }
-    public Value evaluate() {
-        Value v = parameter.evaluate();
+    public Value evaluate(Scope scope) {
+        Value v = parameter.evaluate(scope);
         Value nullValue = new NullValue();
         if (v.equals(nullValue)) {
             return nullValue;

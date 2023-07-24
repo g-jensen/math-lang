@@ -1,6 +1,7 @@
 package mathlang.expressionnode;
 
 import mathlang.NullValue;
+import mathlang.Scope;
 import mathlang.Value;
 import mathlang.expressionnode.BinaryExpressionNode;
 import mathlang.expressionnode.ConstantExpressionNode;
@@ -25,11 +26,12 @@ class DivisionExpressionNodeTest {
         BinaryExpressionNode n5 = new DivisionExpressionNode(one,zero);
         BinaryExpressionNode n6 = new DivisionExpressionNode(one,nullNode);
 
-        assertEquals(new Value("1"),n1.evaluate());
-        assertEquals(new Value("2"),n2.evaluate());
-        assertEquals(new Value("1"),n3.evaluate());
-        assertEquals(new Value("3"),n4.evaluate());
-        assertEquals(new Value("Infinity"),n5.evaluate());
-        assertEquals(new NullValue(),n6.evaluate());
+        Scope s = new Scope();
+        assertEquals(new Value("1"),n1.evaluate(s));
+        assertEquals(new Value("2"),n2.evaluate(s));
+        assertEquals(new Value("1"),n3.evaluate(s));
+        assertEquals(new Value("3"),n4.evaluate(s));
+        assertEquals(new Value("Infinity"),n5.evaluate(s));
+        assertEquals(new NullValue(),n6.evaluate(s));
     }
 }

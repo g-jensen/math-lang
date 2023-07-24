@@ -16,7 +16,7 @@ public class Repl {
         if (input.equalsIgnoreCase("quit")) {
             return new Value("quit");
         } else {
-            return treeBuilder.build(parser.getTokens(input)).evaluate();
+            return treeBuilder.build(parser.getTokens(input)).evaluate(new Scope());
         }
     }
     public void print(Value val) {

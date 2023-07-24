@@ -1,6 +1,7 @@
 package mathlang.expressionnode;
 
 import mathlang.NullValue;
+import mathlang.Scope;
 import mathlang.Value;
 import mathlang.expressionnode.AdditionExpressionNode;
 import mathlang.expressionnode.BinaryExpressionNode;
@@ -22,9 +23,10 @@ class AdditionExpressionNodeTest {
         BinaryExpressionNode n3 = new AdditionExpressionNode(two, three);
         BinaryExpressionNode n4 = new AdditionExpressionNode(one, nullNode);
 
-        assertEquals(new Value("2"),n1.evaluate());
-        assertEquals(new Value("3"),n2.evaluate());
-        assertEquals(new Value("5"),n3.evaluate());
-        assertEquals(new NullValue(),n4.evaluate());
+        Scope s = new Scope();
+        assertEquals(new Value("2"),n1.evaluate(s));
+        assertEquals(new Value("3"),n2.evaluate(s));
+        assertEquals(new Value("5"),n3.evaluate(s));
+        assertEquals(new NullValue(),n4.evaluate(s));
     }
 }

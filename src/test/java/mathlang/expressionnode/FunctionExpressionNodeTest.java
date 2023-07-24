@@ -1,6 +1,7 @@
 package mathlang.expressionnode;
 
 import mathlang.ExpressionParser;
+import mathlang.Scope;
 import mathlang.Value;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +34,7 @@ class FunctionExpressionNodeTest {
         ExpressionParser p = new ExpressionParser();
         String def = "fun greg [] 2";
         ExpressionNode e = new FunctionExpressionNode(p.getTokens(def));
-        assertEquals(new Value("FunctionExpression: greg"),e.evaluate());
+        assertEquals(new Value("FunctionExpression: greg"),e.evaluate(new Scope()));
     }
 
     @Test
@@ -51,6 +52,6 @@ class FunctionExpressionNodeTest {
         ExpressionParser p = new ExpressionParser();
         String def = "fun hello [] 2";
         FunctionExpressionNode f = new FunctionExpressionNode(p.getTokens(def));
-        assertEquals(new Value("2"),f.call(new ExpressionNode[0]).evaluate());
+        assertEquals(new Value("2"),f.call(new ExpressionNode[0]).evaluate(new Scope()));
     }
 }
