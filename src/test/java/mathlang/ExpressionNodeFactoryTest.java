@@ -134,7 +134,7 @@ class ExpressionNodeFactoryTest {
     void createsConstantNodeIfTokenIsTao() {
         ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
 
-        String[] t1 = {"tao"};
+        String[] t1 = {"tau"};
         assertInstanceOf(ConstantExpressionNode.class,factory.createNode(t1,0));
     }
 

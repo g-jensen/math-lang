@@ -14,7 +14,7 @@ public class ExpressionNodeFactory {
 
         this.definedSymbols = new HashMap<>();
         definedSymbols.put("e",new Value("2.718281828459045"));
-        definedSymbols.put("tao",new Value("6.283185307179586"));
+        definedSymbols.put("tau",new Value("6.283185307179586"));
 
         this.definedFunctions = new HashMap<>();
     }

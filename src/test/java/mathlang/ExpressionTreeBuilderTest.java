@@ -57,7 +57,7 @@ class ExpressionTreeBuilderTest {
         assertInstanceOf(ConstantExpressionNode.class,n1);
         assertEquals(new Value(Double.toString(Math.exp(1))),n1.evaluate());
 
-        ExpressionNode n2 = b.build(new String[]{"tao"});
+        ExpressionNode n2 = b.build(new String[]{"tau"});
         assertInstanceOf(ConstantExpressionNode.class,n2);
         assertEquals(new Value(Double.toString(2 * Math.PI)),n2.evaluate());
     }
@@ -83,11 +83,11 @@ class ExpressionTreeBuilderTest {
     void buildsExpressionTreeForFunctionsWithSymbols() {
         ExpressionTreeBuilder b = new ExpressionTreeBuilder();
 
-        ExpressionNode n1 = b.build(new String[]{"cos","tao"});
+        ExpressionNode n1 = b.build(new String[]{"cos","tau"});
         assertInstanceOf(CosineExpressionNode.class,n1);
         assertEquals(new Value("1"),n1.evaluate());
 
-        ExpressionNode n2 = b.build(new String[]{"/","tao","2"});
+        ExpressionNode n2 = b.build(new String[]{"/","tau","2"});
         assertInstanceOf(DivisionExpressionNode.class,n2);
         assertEquals(new Value(Double.toString(Math.PI)),n2.evaluate());
     }
@@ -122,7 +122,7 @@ class ExpressionTreeBuilderTest {
         assertInstanceOf(AdditionExpressionNode.class,n3);
         assertEquals(new Value("8"),n3.evaluate());
 
-        String[] t2 = {"(","/","e","(","+","tao","2",")",")"};
+        String[] t2 = {"(","/","e","(","+","tau","2",")",")"};
         ExpressionNode n4 = b.build(t2);
         assertInstanceOf(DivisionExpressionNode.class,n4);
         assertEquals(new Value("0.32816866068454725"),n4.evaluate());
