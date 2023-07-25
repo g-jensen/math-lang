@@ -97,6 +97,9 @@ class ExpressionTreeBuilderTest {
 
         ExpressionNode n2 = b.build(new String[]{"/","tau","2"});
         assertEquals(new Value(Double.toString(Math.PI)),n2.evaluate(s));
+
+        ExpressionNode n3 = b.build(new String[]{"sum","0","2","identity"});
+        assertEquals(new Value("3"),n3.evaluate(s));
     }
     
     @Test
