@@ -36,7 +36,7 @@ class ConsoleReplTest {
     }
 
     @Test
-    void evaluatesValidInput() {
+    void evaluatesInput() {
         initializeReplWithoutData();
 
         assertEquals(new Value("0"), repl.evaluate("0"));
@@ -47,11 +47,6 @@ class ConsoleReplTest {
         assertEquals(new Value("5"),repl.evaluate("(+ 2 3)"));
         assertEquals(new Value("5"),repl.evaluate("(+ 2 (+ 1 2))"));
         assertEquals(new Value("12"),repl.evaluate("(+ 2 (+ (+ 5 3) 2))"));
-    }
-
-    @Test
-    void evaluatesInvalidInput() {
-        initializeReplWithoutData();
 
         assertEquals(new NullValue(),repl.evaluate(""));
         assertEquals(new Value("+"), repl.evaluate("+ 3"));
