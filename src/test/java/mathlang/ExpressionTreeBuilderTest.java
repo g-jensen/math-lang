@@ -137,6 +137,10 @@ class ExpressionTreeBuilderTest {
         String[] t2 = {"(","/","e","(","+","tau","2",")",")"};
         ExpressionNode n4 = b.build(t2);
         assertEquals(new Value("0.32816866068454725"),n4.evaluate(s));
+
+        String[] t3 = {"+","(","+","(","-","4","1",")","1",")","2"};
+        ExpressionNode n5 = b.build(t3);
+        assertEquals(new Value("6"),n5.evaluate(s));
     }
 
     @Test
