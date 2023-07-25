@@ -1,11 +1,11 @@
 package org;
 
-import mathlang.Repl;
+import mathlang.ConsoleRepl;
 
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        new Repl(System.in,System.out).loop();
+        new ConsoleRepl(System.in,System.out).loop();
     }
 }
