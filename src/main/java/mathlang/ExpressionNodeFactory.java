@@ -5,8 +5,6 @@ import mathlang.expressionnode.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.PatternSyntaxException;
 
 public class ExpressionNodeFactory {
     public ExpressionNodeFactory(ExpressionTreeBuilder treeBuilder) {
@@ -46,15 +44,15 @@ public class ExpressionNodeFactory {
             FunctionExpressionNode f = scope.definedFunctions.get(tokens[tokenIndex]);
             ArrayList<ExpressionNode> params = new ArrayList<>();
             int index = tokenIndex;
-            for (int i = 0; i < f.parameterCount; i++) {
+            while (index < tokens.length-1) {
                 String[] t = treeBuilder.nextParameter(tokens,index);
                 index += t.length;
                 params.add(treeBuilder.build(t));
             }
             f.addParametersToScope(params.toArray(new ExpressionNode[0]));
             return new ConstantExpressionNode(f.evaluate(scope));
-        } catch (Exception | MismatchParameterCountException e) {
-            return new NullExpressionNode();
+        } catch (MismatchParameterCountException e) {
+            return new ConstantExpressionNode(new Value(e.getMessage()));
         }
     }
     private ExpressionNode createDefinitionNode(String[] tokens, int tokenIndex) {

@@ -13,7 +13,6 @@ public class FunctionExpressionNode implements ExpressionNode {
     public Value evaluate(Scope scope) {
         Scope newScope = new Scope(scope);
         newScope.definedSymbols.putAll(this.scope.definedSymbols);
-        //newScope.definedSymbols.forEach((key, value) -> System.out.println(key + " " + value));
         return body.evaluate(newScope);
     }
     public void addParametersToScope(ExpressionNode[] values) throws MismatchParameterCountException {

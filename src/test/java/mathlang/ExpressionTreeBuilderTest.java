@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ExpressionTreeBuilderTest {
 
     @Test
-    void buildsNullExpressionTreeForInvalidTokens() {
+    void handlesNullCases() {
         ExpressionTreeBuilder b = new ExpressionTreeBuilder();
         Scope s = new Scope();
 
@@ -25,8 +25,15 @@ class ExpressionTreeBuilderTest {
         assertEquals(new NullValue(),n3.evaluate(s));
 
         ExpressionNode n4 = b.build(new String[]{"+","3"});
-        assertInstanceOf(NullExpressionNode.class,n4);
-        assertEquals(new NullValue(),n4.evaluate(s));
+        assertInstanceOf(ConstantExpressionNode.class,n4);
+        assertEquals(
+                new Value("Mismatched parameter count: 1 when expected 2"),
+                n4.evaluate(s)
+        );
+
+        ExpressionNode n5 = b.build(new String[]{"def","a"});
+        assertInstanceOf(NullExpressionNode.class,n5);
+        assertEquals(new NullValue(),n5.evaluate(s));
     }
 
     @Test

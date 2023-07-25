@@ -54,7 +54,10 @@ class ReplTest {
         initializeReplWithoutData();
 
         assertEquals(new NullValue(),repl.evaluate(""));
-        assertEquals(new NullValue(),repl.evaluate("+ 3"));
+        assertEquals(
+                new Value("Mismatched parameter count: 1 when expected 2"),
+                repl.evaluate("+ 3")
+        );
         assertEquals(new NullValue(),repl.evaluate("("));
         assertEquals(new NullValue(),repl.evaluate("+ 3 ()"));
     }
