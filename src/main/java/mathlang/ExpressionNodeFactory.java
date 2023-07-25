@@ -81,6 +81,7 @@ public class ExpressionNodeFactory {
         ExpressionNode a = new SymbolExpressionNode("a");
         ExpressionNode b = new SymbolExpressionNode("b");
         ExpressionNode c = new SymbolExpressionNode("c");
+        scope.definedFunctions.put("identity",new FunctionExpressionNode(oneParam,a));
         scope.definedFunctions.put("exp",new FunctionExpressionNode(oneParam,new ExponentialExpressionNode(a)));
         scope.definedFunctions.put("ln",new FunctionExpressionNode(oneParam,new NaturalLogExpressionNode(a)));
         scope.definedFunctions.put("sin",new FunctionExpressionNode(oneParam,new SineExpressionNode(a)));

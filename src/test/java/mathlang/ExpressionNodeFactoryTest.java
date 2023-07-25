@@ -56,6 +56,9 @@ class ExpressionNodeFactoryTest {
 
         String[] t8 = {"cos"};
         assertInstanceOf(ConstantExpressionNode.class,factory.createNode(t8,0));
+
+        String[] t9 = {"identity"};
+        assertInstanceOf(ConstantExpressionNode.class,factory.createNode(t9,0));
     }
 
     @Test
@@ -160,5 +163,21 @@ class ExpressionNodeFactoryTest {
         factory.createNode(new String[]{"def","hello","(","+","2","5",")"},0);
         assertTrue(factory.scope.definedSymbols.containsKey("hello"));
         assertEquals(new Value("7"),factory.scope.definedSymbols.get("hello"));
+    }
+
+    @Test
+    void createsSumNodeIfTokenIsSum() {
+        ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
+
+        String[] t1 = {"sum","0","2","exp"};
+        assertInstanceOf(ConstantExpressionNode.class,factory.createNode(t1,0));
+    }
+
+    @Test
+    void createsSumNodeIfTokenIsIdentity() {
+        ExpressionNodeFactory factory = new ExpressionNodeFactory(new ExpressionTreeBuilder());
+
+        String[] t1 = {"identity","0"};
+        assertInstanceOf(ConstantExpressionNode.class,factory.createNode(t1,0));
     }
 }
