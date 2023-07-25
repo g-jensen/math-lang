@@ -4,9 +4,8 @@ Basic Math Language
 ## Running
 download from releases and run `java -jar math-lang.jar`
 
-or
+or add an input file: `java -jar math-lang.jar input-file.ml`
 
-just run `Main` found in `org`
 ## Features
 ### Basic Math Functions
 ```
