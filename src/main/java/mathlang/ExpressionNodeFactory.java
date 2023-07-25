@@ -6,68 +6,44 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.PatternSyntaxException;
 
 public class ExpressionNodeFactory {
     public ExpressionNodeFactory(ExpressionTreeBuilder treeBuilder) {
+        this.scope = new Scope();
         this.treeBuilder = treeBuilder;
-        this.specialTokens = new String[]{"(",")","[","]","+","-","*","/","exp","ln","sin","cos","def","fun"};
-
-        this.definedSymbols = new HashMap<>();
-        definedSymbols.put("e",new Value("2.718281828459045"));
-        definedSymbols.put("tau",new Value("6.283185307179586"));
-
-        this.definedFunctions = new HashMap<>();
+        this.specialTokens = new String[]{"(",")","def"};
+        this.scope.definedSymbols = new HashMap<>();
+        addDefinedSymbols();
+        this.scope.definedFunctions = new HashMap<>();
+        addDefinedFunctions();
     }
     public ExpressionNode createNode(String[] tokens, int tokenIndex) {
         String token = tokens[tokenIndex];
-        if (Utils.isNumeric(token)) {
+        if (Utils.isNumeric(token))
             return createConstantNodeFromNumber(tokens, tokenIndex);
-        } else if (definedSymbols.containsKey(token)) {
+        else if (scope.definedSymbols.containsKey(token))
             return createConstantNodeFromSymbol(tokens, tokenIndex);
-        } else if (definedFunctions.containsKey(token)) {
-            return createConstantNodeFromFunctionCall(tokens,tokenIndex);
-        } else if (!isSpecial(token)) {
+        else if (scope.definedFunctions.containsKey(token))
+            return createNodeFromFunctionCall(tokens,tokenIndex);
+        else if (!isSpecial(token))
             return new SymbolExpressionNode(token);
-        } else if (token.equals("+")) {
-            return createBinaryNode(tokens,tokenIndex,AdditionExpressionNode.class);
-        } else if (token.equals("-")) {
-            return createBinaryNode(tokens,tokenIndex,SubtractionExpressionNode.class);
-        } else if (token.equals("*")) {
-            return createBinaryNode(tokens,tokenIndex,MultiplicationExpressionNode.class);
-        } else if (token.equals("/")) {
-            return createBinaryNode(tokens,tokenIndex,DivisionExpressionNode.class);
-        } else if (token.equals("exp")) {
-            return createUnaryNode(tokens,tokenIndex,ExponentialExpressionNode.class);
-        } else if (token.equals("ln")) {
-            return createUnaryNode(tokens,tokenIndex,NaturalLogExpressionNode.class);
-        } else if (token.equals("sin")) {
-            return createUnaryNode(tokens,tokenIndex,SineExpressionNode.class);
-        } else if (token.equals("cos")) {
-            return createUnaryNode(tokens,tokenIndex,CosineExpressionNode.class);
-        } else if (token.equals("def")) {
+        else if (token.equals("def"))
             return createDefinitionNode(tokens,tokenIndex);
-        } else if (token.equals("[")) {
-            return createListNode(tokens,tokenIndex);
-        } else if (token.equals("fun")) {
-            return createFunctionNode(tokens,tokenIndex);
-        }
         return null;
     }
     private boolean isSpecial(String token) {
         return Arrays.asList(specialTokens).contains(token);
     }
-    private  ExpressionNode createNullNode() {
-        return new NullExpressionNode();
-    }
     private ExpressionNode createConstantNodeFromNumber(String[] tokens, int tokenIndex) {
         return new ConstantExpressionNode(new Value(tokens[tokenIndex]));
     }
     private ExpressionNode createConstantNodeFromSymbol(String[] tokens, int tokenIndex) {
-        return new ConstantExpressionNode(definedSymbols.get(tokens[tokenIndex]));
+        return new ConstantExpressionNode(scope.definedSymbols.get(tokens[tokenIndex]));
     }
-    private ExpressionNode createConstantNodeFromFunctionCall(String[] tokens, int tokenIndex) {
+    private ExpressionNode createNodeFromFunctionCall(String[] tokens, int tokenIndex) {
         try {
-            FunctionExpressionNode f = definedFunctions.get(tokens[tokenIndex]);
+            FunctionExpressionNode f = scope.definedFunctions.get(tokens[tokenIndex]);
             ArrayList<ExpressionNode> params = new ArrayList<>();
             int index = tokenIndex;
             for (int i = 0; i < f.parameterCount; i++) {
@@ -75,30 +51,9 @@ public class ExpressionNodeFactory {
                 index += t.length;
                 params.add(treeBuilder.build(t));
             }
-            f.setParameterValues(params.toArray(new ExpressionNode[0]));
-            return new ConstantExpressionNode(f.evaluate(new Scope()));
-        } catch (MismatchParameterCountException e) {
-            return new ConstantExpressionNode(new Value(e.getMessage()));
-        } catch (Exception e) {
-            return new NullExpressionNode();
-        }
-    }
-    private ExpressionNode createBinaryNode(String[] tokens, int tokenIndex, Class<? extends BinaryExpressionNode> c) {
-        try {
-            String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
-            String[] p2 = treeBuilder.nextParameter(tokens,tokenIndex+p1.length);
-            return c.getConstructor(ExpressionNode.class,ExpressionNode.class)
-                    .newInstance(treeBuilder.build(p1), treeBuilder.build(p2));
-        } catch (Exception e) {
-            return new NullExpressionNode();
-        }
-    }
-    private ExpressionNode createUnaryNode(String[] tokens, int tokenIndex, Class<? extends UnaryExpressionNode> c) {
-        try {
-            String[] p1 = treeBuilder.nextParameter(tokens,tokenIndex);
-            return c.getConstructor(ExpressionNode.class)
-                    .newInstance(treeBuilder.build(p1));
-        } catch (Exception e) {
+            f.addParametersToScope(params.toArray(new ExpressionNode[0]));
+            return new ConstantExpressionNode(f.evaluate(scope));
+        } catch (Exception | MismatchParameterCountException e) {
             return new NullExpressionNode();
         }
     }
@@ -108,40 +63,33 @@ public class ExpressionNodeFactory {
             ExpressionNode n = new ConstantExpressionNode(new Value(symbol));
             String[] p2 = treeBuilder.nextParameter(tokens,tokenIndex+1);
             ExpressionNode value = treeBuilder.build(p2);
-            definedSymbols.put(symbol,value.evaluate(new Scope()));
+            scope.definedSymbols.put(symbol,value.evaluate(scope));
             return new DefinitionExpressionNode(n,value);
         } catch (Exception e) {
             return new NullExpressionNode();
         }
     }
-    private ExpressionNode createListNode(String[] tokens, int tokenIndex) {
-        ArrayList<Value> values = new ArrayList<>();
-        for (int i = tokenIndex+1; i < tokens.length; i++) {
-            String token = tokens[i];
-            if (token.equals("]")) {
-                return new ListExpressionNode(values.toArray(new Value[0]));
-            }
-            values.add(new Value(token));
-        }
-        return new NullExpressionNode();
+    private void addDefinedSymbols() {
+        scope.definedSymbols.put("e",new Value("2.718281828459045"));
+        scope.definedSymbols.put("tau",new Value("6.283185307179586"));
     }
-    private ExpressionNode createFunctionNode(String[] tokens, int tokenIndex) {
-        try {
-            String name = treeBuilder.nextParameter(tokens,tokenIndex)[0];
-            String[] ps = Arrays.copyOfRange(tokens,tokenIndex+2,tokens.length);
-            ListExpressionNode params = (ListExpressionNode)treeBuilder.build(ps);
-            String[] b = Arrays.copyOfRange(tokens,tokenIndex+params.values.length+4,tokens.length);
-            System.out.println(Arrays.toString(b));
-            ExpressionNode body = treeBuilder.build(b);
-            FunctionExpressionNode n = new FunctionExpressionNode(params,body);
-            definedFunctions.put(name,n);
-            return n;
-        } catch (Exception e) {
-            return new NullExpressionNode();
-        }
+    private void addDefinedFunctions() {
+        Value[] twoValues = new Value[]{new Value("a"),new Value("b")};
+        ListExpressionNode twoParams = new ListExpressionNode(twoValues);
+        Value[] oneValue = new Value[]{new Value("a")};
+        ListExpressionNode oneParam = new ListExpressionNode(oneValue);
+        ExpressionNode a = new SymbolExpressionNode("a");
+        ExpressionNode b = new SymbolExpressionNode("b");
+        scope.definedFunctions.put("+",new FunctionExpressionNode(twoParams,new AdditionExpressionNode(a,b)));
+        scope.definedFunctions.put("-",new FunctionExpressionNode(twoParams,new SubtractionExpressionNode(a,b)));
+        scope.definedFunctions.put("*",new FunctionExpressionNode(twoParams,new MultiplicationExpressionNode(a,b)));
+        scope.definedFunctions.put("/",new FunctionExpressionNode(twoParams,new DivisionExpressionNode(a,b)));
+        scope.definedFunctions.put("exp",new FunctionExpressionNode(oneParam,new ExponentialExpressionNode(a)));
+        scope.definedFunctions.put("ln",new FunctionExpressionNode(oneParam,new NaturalLogExpressionNode(a)));
+        scope.definedFunctions.put("sin",new FunctionExpressionNode(oneParam,new SineExpressionNode(a)));
+        scope.definedFunctions.put("cos",new FunctionExpressionNode(oneParam,new CosineExpressionNode(a)));
     }
     private ExpressionTreeBuilder treeBuilder;
     private String[] specialTokens;
-    public Map<String, Value> definedSymbols;
-    public Map<String, FunctionExpressionNode> definedFunctions;
+    public Scope scope;
 }

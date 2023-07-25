@@ -27,7 +27,7 @@ class FunctionExpressionNodeTest {
         ExpressionNode body = new AdditionExpressionNode(a,b);
         FunctionExpressionNode f = new FunctionExpressionNode(l, body);
 
-        f.setParameterValues(new ExpressionNode[]{one,two});
+        f.addParametersToScope(new ExpressionNode[]{one,two});
         assertEquals(new Value("3"),f.evaluate(new Scope()));
     }
 }
