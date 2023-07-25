@@ -21,6 +21,7 @@ public class ProductExpressionNode implements ExpressionNode {
         if (Objects.isNull(s) || Objects.isNull(e)) {
             return new Value(Double.toString(accumulation));
         }
+        accumulation = 1.0;
         for (int i = s; i <= e; i++) {
             try {
                 FunctionExpressionNode fun = scope.definedFunctions.get(f.evaluate(scope).toString());

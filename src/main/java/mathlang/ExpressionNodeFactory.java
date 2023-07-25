@@ -91,6 +91,7 @@ public class ExpressionNodeFactory {
         scope.definedFunctions.put("*",new FunctionExpressionNode(twoParams,new MultiplicationExpressionNode(a,b)));
         scope.definedFunctions.put("/",new FunctionExpressionNode(twoParams,new DivisionExpressionNode(a,b)));
         scope.definedFunctions.put("sum",new FunctionExpressionNode(threeParams,new SumExpressionNode(a,b,c)));
+        scope.definedFunctions.put("product",new FunctionExpressionNode(threeParams,new ProductExpressionNode(a,b,c)));
     }
     private ExpressionTreeBuilder treeBuilder;
     private String[] specialTokens;

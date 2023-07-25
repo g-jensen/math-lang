@@ -100,6 +100,9 @@ class ExpressionTreeBuilderTest {
 
         ExpressionNode n3 = b.build(new String[]{"sum","0","2","identity"});
         assertEquals(new Value("3"),n3.evaluate(s));
+
+        ExpressionNode n4 = b.build(new String[]{"product","1","3","identity"});
+        assertEquals(new Value("6"),n4.evaluate(s));
     }
     
     @Test
