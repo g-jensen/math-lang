@@ -26,10 +26,7 @@ class ExpressionTreeBuilderTest {
 
         ExpressionNode n4 = b.build(new String[]{"+","3"});
         assertInstanceOf(ConstantExpressionNode.class,n4);
-        assertEquals(
-                new Value("Mismatched parameter count: 1 when expected 2"),
-                n4.evaluate(s)
-        );
+        assertEquals(new Value("+"), n4.evaluate(s));
 
         ExpressionNode n5 = b.build(new String[]{"def","a"});
         assertInstanceOf(NullExpressionNode.class,n5);

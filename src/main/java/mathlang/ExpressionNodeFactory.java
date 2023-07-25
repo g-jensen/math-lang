@@ -52,7 +52,7 @@ public class ExpressionNodeFactory {
             f.addParametersToScope(params.toArray(new ExpressionNode[0]));
             return new ConstantExpressionNode(f.evaluate(scope));
         } catch (MismatchParameterCountException e) {
-            return new ConstantExpressionNode(new Value(e.getMessage()));
+            return new ConstantExpressionNode(new Value(tokens[tokenIndex]));
         }
     }
     private ExpressionNode createDefinitionNode(String[] tokens, int tokenIndex) {
@@ -72,20 +72,24 @@ public class ExpressionNodeFactory {
         scope.definedSymbols.put("tau",new Value("6.283185307179586"));
     }
     private void addDefinedFunctions() {
-        Value[] twoValues = new Value[]{new Value("a"),new Value("b")};
-        ListExpressionNode twoParams = new ListExpressionNode(twoValues);
         Value[] oneValue = new Value[]{new Value("a")};
         ListExpressionNode oneParam = new ListExpressionNode(oneValue);
+        Value[] twoValues = new Value[]{new Value("a"),new Value("b")};
+        ListExpressionNode twoParams = new ListExpressionNode(twoValues);
+        Value[] threeValues = new Value[]{new Value("a"),new Value("b"),new Value("c")};
+        ListExpressionNode threeParams = new ListExpressionNode(threeValues);
         ExpressionNode a = new SymbolExpressionNode("a");
         ExpressionNode b = new SymbolExpressionNode("b");
-        scope.definedFunctions.put("+",new FunctionExpressionNode(twoParams,new AdditionExpressionNode(a,b)));
-        scope.definedFunctions.put("-",new FunctionExpressionNode(twoParams,new SubtractionExpressionNode(a,b)));
-        scope.definedFunctions.put("*",new FunctionExpressionNode(twoParams,new MultiplicationExpressionNode(a,b)));
-        scope.definedFunctions.put("/",new FunctionExpressionNode(twoParams,new DivisionExpressionNode(a,b)));
+        ExpressionNode c = new SymbolExpressionNode("c");
         scope.definedFunctions.put("exp",new FunctionExpressionNode(oneParam,new ExponentialExpressionNode(a)));
         scope.definedFunctions.put("ln",new FunctionExpressionNode(oneParam,new NaturalLogExpressionNode(a)));
         scope.definedFunctions.put("sin",new FunctionExpressionNode(oneParam,new SineExpressionNode(a)));
         scope.definedFunctions.put("cos",new FunctionExpressionNode(oneParam,new CosineExpressionNode(a)));
+        scope.definedFunctions.put("+",new FunctionExpressionNode(twoParams,new AdditionExpressionNode(a,b)));
+        scope.definedFunctions.put("-",new FunctionExpressionNode(twoParams,new SubtractionExpressionNode(a,b)));
+        scope.definedFunctions.put("*",new FunctionExpressionNode(twoParams,new MultiplicationExpressionNode(a,b)));
+        scope.definedFunctions.put("/",new FunctionExpressionNode(twoParams,new DivisionExpressionNode(a,b)));
+        scope.definedFunctions.put("sum",new FunctionExpressionNode(threeParams,new SumExpressionNode(a,b,c)));
     }
     private ExpressionTreeBuilder treeBuilder;
     private String[] specialTokens;
