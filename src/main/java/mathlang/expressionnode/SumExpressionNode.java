@@ -1,6 +1,5 @@
 package mathlang.expressionnode;
 
-import mathlang.ExpressionNodeFactory;
 import mathlang.NullValue;
 import mathlang.Scope;
 import mathlang.Value;
