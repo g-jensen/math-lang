@@ -6,7 +6,7 @@ import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ConsoleReplTest {
+class ReplTest {
     private Repl repl;
     private ByteArrayOutputStream outputStream;
 
@@ -17,7 +17,7 @@ class ConsoleReplTest {
         outputStream = new ByteArrayOutputStream();
         PrintStream printStream = new PrintStream(outputStream);
 
-        repl = new ConsoleRepl(in, printStream);
+        repl = new Repl(in, printStream);
     }
 
     void initializeReplWithoutData() {
